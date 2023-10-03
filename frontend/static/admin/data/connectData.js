@@ -71,14 +71,19 @@ export async function getDataByID(table, id) {
 
 export async function createData(table, data) {
   onLoad()
-  let response = await axios.post(url + table, data + '.json');
+  let response = await axios.post(url + table + '.json', data);
+  response =  response.data
+  response = {
+    id: response.name
+  }
   offLoad()
-  return response.data;
+  return response;
 }
 
 export async function updateData(table, data) {
   onLoad()
-  let response = await axios.put(url + table, data + '.json');
+
+  let response = await axios.put(url + table + '.json', data);
   offLoad()
   return response.data;
 }
@@ -89,6 +94,30 @@ export async function deleteData(table, data) {
   offLoad()
   return response.data;
 }
+
+
+//---------------------------------------------------//
+//Province Open API || GET TỈNH THÀNH
+var urlAddress = "https://provinces.open-api.vn/api/";
+export async function getCity() {
+  onLoad()
+  let response = await axios.get(urlAddress);
+  offLoad()
+  return response.data;
+}
+export async function getDistrict(id) {
+  onLoad()
+  let response = await axios.get(urlAddress + 'p/' + id + "?depth=2");
+  offLoad()
+  return response.data.districts;
+}
+export async function getWard(id) {
+  onLoad()
+  let response = await axios.get(urlAddress + "d/" + id + "?depth=2");
+  offLoad()
+  return response.data.wards;
+}
+
 
 
 //-------------------------------------------------//
@@ -117,8 +146,7 @@ export async function uploadFile(upload) {
 
 
 export function convertToVND(amount) {
-  return amount
-  // return amount.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+  return amount.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
 }
 
 function onLoad(){
@@ -147,3 +175,22 @@ export function removeVietnameseTones(str) {
   return str;
 }
 
+
+export function getDateNow() {
+  let date = new Date();
+  let day = String(date.getDate()).padStart(2, '0');
+  let month = String(date.getMonth() + 1).padStart(2, '0');
+  let year = date.getFullYear();
+
+  let formattedDate = `${day}-${month}-${year}`;
+  return formattedDate
+}
+
+export function formatDate(dateString) {
+  var dateParts = dateString.split("-");
+  if(dateParts[2].length!=4){
+    return dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+  }else{
+    return dateString
+  }
+}

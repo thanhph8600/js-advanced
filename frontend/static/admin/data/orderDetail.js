@@ -22,6 +22,10 @@ import {
     let result = await updateData(table + "/" + id, data);
     return result;
   }
+  export async function createOrder_detail(data) {
+    let result = await createData(table, data);
+    return result;
+  }
   
   export function checkStatus(data) {
     var result;

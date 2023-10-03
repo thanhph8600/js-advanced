@@ -2,6 +2,7 @@ import AbstractView from "./AbstractView.js";
 import { router } from "../index.js";
 import { getProduct, getProductByID,getProductByIDCategory } from "../../admin/data/product.js";
 import { rederRowProduct } from "./home.js";
+import { convertToVND } from "../../admin/data/connectData.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -63,7 +64,7 @@ export default class extends AbstractView {
               </span>
             </div>
             <div class="flex flex-col gap-3">
-              <p class="title-font font-medium text-2xl text-red-600">$58.00</p>
+              <p class="title-font font-medium text-2xl text-red-600">${convertToVND(product.price)}</p>
               <button data="${product.id}" class="addCart text-white bg-[--rose-2] border-0 py-2 px-6 text-center focus:outline-none hover:bg-[--rose-1] rounded">Thêm vào giỏ hàng</button>
               <button class="addCart text-white bg-[--rose-2] border-0 py-2 px-10 focus:outline-none hover:bg-[--rose-1] rounded">Mua ngay</button>
             </div>

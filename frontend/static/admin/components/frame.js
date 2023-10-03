@@ -1,6 +1,8 @@
 import aside from "./aside.js"
+import load from "./load.js"
 export default function frame() {
     return `
+    ${load()}
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
     data-sidebar-position="fixed" data-header-position="fixed">
         ${aside()}

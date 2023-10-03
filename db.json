@@ -132,6 +132,7 @@
       "customer_phone": "0898247883",
       "customer_email": "tthanh@gmail.com",
       "status": 0,
+      "created_date":"22-09-2023",
       "id": 1
     },
     {
@@ -139,6 +140,7 @@
       "customer_address": "Quảng nam",
       "customer_email": "tsadsdanh@gmail.com",
       "customer_phone": "0898247883",
+      "created_date":"23-09-2023",
       "status": 3,
       "id": 2
     }

@@ -1,19 +1,22 @@
 import Dashboard from "../views/Dashboard.js";
 
-import userList from "../views/userList.js";
-import userView from "../views/userUpdate.js";
-import createUser from "../views/userAdd.js";
+import userList from "../views/user/userList.js";
+import userView from "../views/user/userUpdate.js";
+import createUser from "../views/user/userAdd.js";
 
 import categoryList from "../views/category/categoryList.js";
 import categoryAdd from "../views/category/categoryAdd.js";
 import categoryUpdate from "../views/category/categoryUpdate.js";
 
-import productsList from "../views/productsList.js";
-import productAdd from "../views/productAdd.js";
-import productUpdate from "../views/productUpdate.js";
+import productsList from "../views/product/productsList.js";
+import productAdd from "../views/product/productAdd.js";
+import productUpdate from "../views/product/productUpdate.js";
 
-import orderList from "../views/orderList.js";
-import orderDetail from "../views/orderDetail.js";
+import orderList from "../views/order/orderList.js";
+import orderDetail from "../views/order/orderDetail.js";
+
+import chart from "../views/chart/chart.js";
+import detailChart from "../views/chart/detailChart.js";
 const routes = [
     { path: "/", view: Dashboard },
     { path: "/user", view: userList },
@@ -27,6 +30,9 @@ const routes = [
     { path: "/product/:id", view: productUpdate },
     { path: "/order", view: orderList },
     { path: "/order/:id", view: orderDetail },
+    { path: "/chart", view: chart },
+    { path: "/chart/:name", view: detailChart },
+
 
 
 ];

@@ -1,4 +1,4 @@
-export default function header() {
+export default function footer() {
     return `
     <footer>
         <div class=" container lg:w-4/5 m-auto pt-8 bg-white">

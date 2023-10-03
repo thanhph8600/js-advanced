@@ -35,21 +35,24 @@ export default function header() {
               </div>
             </div>
           </div>
-          <div class=" bg-[#FDAFBC] py-3 text-lg uppercase ">
+          <div class=" bg-[#FDAFBC] py-2 text-base uppercase ">
             <nav class="container lg:w-4/5 m-auto flex justify-between">
-              <a href="/home" class="text-white hover:text-[--rose-2]" data-link>trang chủ</a>
-              <a href="/list-products/search=teddy" class="text-white hover:text-[--rose-2]" data-link>bộ sưu tập gấu teddy</a>
-              <a href="/list-products" class="text-white hover:text-[--rose-2]" data-link>bộ sưu tập</a>
-              <a href="" class="text-white hover:text-[--rose-2]" data-link>thú bông</a>
-              <a href="" class="text-white hover:text-[--rose-2]" data-link>hoạt hình</a>
-              <a href="/cart" class="text-white relative hover:text-[--rose-2]" data-link><i class="fa fa-shopping-cart pr-2" aria-hidden="true"></i> giỏ hàng
-                <p class="countCart absolute top-[-15px] border right-[-20px] hover:bg-white h-7 w-7 rounded-full flex items-center justify-center bg-[white] text-[--rose-2]">0</p>
+              <a href="/home" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>trang chủ</a>
+              <a href="/list-products/search=teddy" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>bộ sưu tập gấu teddy</a>
+              <a href="/list-products" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>bộ sưu tập</a>
+              <a href="" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>thú bông</a>
+              <a href="/cart" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>
+                giỏ hàng <i class="fa fa-shopping-cart pl-2 text-xl" aria-hidden="true"></i> 
+                <p class="countCart absolute top-[-10px] border right-[-20px] hover:bg-white h-6 w-6 rounded-full flex items-center justify-center bg-[white] text-[--rose-2]">0</p>
               </a>
+              <a href="/check-order" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>Tra cứu đơn hàng</a>
+
             </nav>
           </div>
         </header>
         `;
 }
+
 $(document).on('keyup keyon','input[name=search]', async function(){
   var value = $(this).val()
   if(value){
@@ -57,7 +60,6 @@ $(document).on('keyup keyon','input[name=search]', async function(){
     products = products.filter(item=>{
       return removeVietnameseTones(item.name).includes(value)
     })
-    console.log(products);
     if(products.length == 0){
       $('.search').html('')
       return
@@ -65,7 +67,7 @@ $(document).on('keyup keyon','input[name=search]', async function(){
 
     var itemProducts = '' 
     for (let i = 0; i < products.length; i++) {
-      itemProducts = itemProducts + `<a href="" data-link class=" items-center py-2 px-4 border-y flex gap-4">
+      itemProducts = itemProducts + `<a href="/detail-product/${products[i].id}" data-link class=" items-center py-2 px-4 border-y flex gap-4">
       <img class=" w-[40px]" src="/static/upload/${products[i].thumb}">
       <span class="truncate">${products[i].name}</span>
     </a>`
@@ -84,6 +86,7 @@ $(document).on('keyup keyon','input[name=search]', async function(){
 
 $(document).on('click','.btn-search',function(){
   var value = $('input[name=search]').val()
+  value = removeVietnameseTones(value)
   $('.search').html('')
   $('input[name=search]').val('')
   history.pushState(null, null, '/list-products/search='+value);

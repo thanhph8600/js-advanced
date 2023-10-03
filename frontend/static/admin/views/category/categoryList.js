@@ -7,6 +7,7 @@ export default class extends AbstractView {
     }
 
     async getHtml() {
+        var htmlListCategory = await rederCategory();
         return `
         <table class="table">
             <thead>
@@ -17,7 +18,7 @@ export default class extends AbstractView {
                 </tr>
             </thead>
             <tbody id="listCategory">
-                ${rederCategory()}
+                ${htmlListCategory}
                 <tr>
                     <th colspan="6" class="py-5 d-flex justify-content-between"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></th>
                 </tr>
@@ -30,18 +31,15 @@ export default class extends AbstractView {
 
 async function rederCategory(){
     let categorys = await getCategory()
-    listCategory(categorys)
+    var html = listCategory(categorys)
+    return html
 }
 
 function listCategory(item){
     var element = item.map(item=>{
         return itemCategory(item)
     })
-
-    $(document).ready(function() {
-        document.getElementById('listCategory').innerHTML = element.join('')
-    })
-
+    return element.join('')
 }
 
 function itemCategory(item){

@@ -5,7 +5,7 @@ export default function frame() {
     return `
         ${header()}
         ${load()}
-        <div id="main">
+        <div id="main" class="min-h-[50vh]">
         </div>
         ${footer()}
     `

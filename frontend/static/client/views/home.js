@@ -88,13 +88,18 @@ export function rederItemProduct(item){
         return html
 }
 
-$(document).on('click','.addCart',function(){
+$(document).on('click','.addCart',async function(){
   var id = $(this).attr('data')
-  setLocalstorage(id)
-
+  await setLocalstorage(id)
+  getCoutCart()
 })
 
-$(document).ready(function(){
-  var valueLocal = getLocal()
-  $('.countCart').html(valueLocal.length)
-})
+export function getCoutCart(){
+  $(document).ready(async function(){
+    var valueLocal = await getLocal()
+    if(valueLocal){
+      $('.countCart').html(valueLocal.length)
+    }
+  })
+}
+getCoutCart()

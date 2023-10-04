@@ -207,6 +207,7 @@ $(document).on('click','.edit-order',function(){
   $(this).removeClass('edit-order').removeClass('btn-warning').addClass('update-order').addClass('btn-success')
   $(this).html('<i class="fa fa-wrench" aria-hidden="true"></i> Update')
 })
+
 $(document).on('click','.update-order',function(){
   var elemetInput = document.querySelectorAll('.input')
   for (let i = 0; i < elemetInput.length; i++) {

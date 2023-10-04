@@ -35,23 +35,23 @@ export function checkStatus(data) {
   var result;
   switch (data) {
     case 1:
-      result = `<span class="btn text-white bg-primary">Đang chờ xác nhận </span>`;
+      result = `<span class="btn  text-primary   font-semibold">Đang chờ xác nhận </span>`;
       break;
     case 2:
-      result = `<span class="btn text-white bg-warning">Đơn hàng đã được xác nhận</span>`;
+      result = `<span class="btn  text-warning  font-semibold " >Đơn hàng đã được xác nhận</span>`;
       break;
     case 3:
-      result = `<span class="btn text-white btn-danger">Đang gửi đến khách hàng</span>`;
+      result = `<span class="btn  text-danger  font-semibold ">Đang gửi đến khách hàng</span>`;
       break;
     case 4:
-      result = `<span class="btn text-white btn-success">Đã nhận được hàng</span>`;
+      result = `<span class="btn  text-success  font-semibold ">Đã nhận được hàng</span>`;
       break;
     case 0:
       result = `
-        <span  class="btn text-white  btn-dark">Đơn hàng đã bị hủy</span>`;
+        <span  class="btn   text-dark   font-semibold">Đơn hàng đã bị hủy</span>`;
       break;
     default:
-      result = `<span class="btn text-white btn-danger">Đã nhận hàng</span>`;
+      result = `<span class="btn  text-danger font-semibold">Đã nhận hàng</span>`;
       break;
   }
   return result;

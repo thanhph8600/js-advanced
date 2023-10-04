@@ -83,7 +83,7 @@ export async function createData(table, data) {
 export async function updateData(table, data) {
   onLoad()
 
-  let response = await axios.put(url + table + '.json', data);
+  let response = await axios.patch(url + table + '.json', data);
   offLoad()
   return response.data;
 }

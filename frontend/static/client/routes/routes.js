@@ -5,6 +5,7 @@ import cart from "../views/cart.js";
 import checkOut from "../views/checkOut.js";
 import thanks from "../views/thanks.js";
 import checkOrder from "../views/checkOrder.js";
+import checkOrderDetail from "../views/checkOrderDetail.js";
 const routes = [
     { path: "/", view: home },
     { path: "/detail-product/:id", view: detailProduct },
@@ -15,6 +16,7 @@ const routes = [
     { path: "/check-out", view: checkOut },
     { path: "/thanks", view: thanks },
     { path: "/check-order", view: checkOrder },
+    { path: "/check-order/:id", view: checkOrderDetail },
 
 
 ];

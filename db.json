@@ -132,7 +132,7 @@
       "customer_phone": "0898247883",
       "customer_email": "tthanh@gmail.com",
       "status": 0,
-      "created_date":"22-09-2023",
+      "created_date": "22-09-2023",
       "id": 1
     },
     {
@@ -140,9 +140,18 @@
       "customer_address": "Quảng nam",
       "customer_email": "tsadsdanh@gmail.com",
       "customer_phone": "0898247883",
-      "created_date":"23-09-2023",
+      "created_date": "23-09-2023",
       "status": 3,
       "id": 2
+    },
+    {
+      "customer_name": "thanh",
+      "customer_email": "thanh@gmail.com",
+      "customer_phone": "123456789",
+      "customer_address": "lâm , Phường Cầu Diễn, Quận Nam Từ Liêm , Thành phố Hà Nội",
+      "created_date": "05-10-2023",
+      "status": 1,
+      "id": 3
     }
   ],
   "order_details": [
@@ -166,6 +175,14 @@
       "product_id": 1,
       "quantity": 2,
       "unit_price": 99999
+    },
+
+    {
+      "order_id": 3,
+      "product_id": 2,
+      "quantity": 1,
+      "unit_price": 385000,
+      "id": 5
     }
   ]
 }

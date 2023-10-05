@@ -44,7 +44,7 @@ export function checkStatus(data) {
       result = `<span class="btn  text-danger  font-semibold ">Đang gửi đến khách hàng</span>`;
       break;
     case 4:
-      result = `<span class="btn  text-success  font-semibold ">Đã nhận được hàng</span>`;
+      result = `<span class="btn  text-success  font-semibold ">Đã gửi thành công</span>`;
       break;
     case 0:
       result = `

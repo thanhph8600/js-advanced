@@ -17,6 +17,9 @@ import orderDetail from "../views/order/orderDetail.js";
 
 import chart from "../views/chart/chart.js";
 import detailChart from "../views/chart/detailChart.js";
+
+import listComment from "../views/comment/listComment.js";
+import detailComment from "../views/comment/detailComment.js";
 const routes = [
     { path: "/", view: Dashboard },
     { path: "/user", view: userList },
@@ -32,6 +35,8 @@ const routes = [
     { path: "/order/:id", view: orderDetail },
     { path: "/chart", view: chart },
     { path: "/chart/:name", view: detailChart },
+    { path: "/comments", view: listComment },
+    { path: "/comment/:id", view: detailComment },
 
 
 

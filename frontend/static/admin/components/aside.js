@@ -57,6 +57,14 @@ export default function aside() {
                 </a>
               </li>
               <li class="sidebar-item">
+                <a class="sidebar-link" href="/comments" aria-expanded="false" data-link > 
+                  <span style="pointer-events: none">
+                    <i class="fa fa-comment-o" aria-hidden="true"></i>
+                  </span>
+                  <span style="pointer-events: none" class="hide-menu">Comments</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
                 <a class="sidebar-link" href="/chart" aria-expanded="false" data-link > 
                   <span style="pointer-events: none">
                     <i class="fa fa-line-chart" aria-hidden="true"></i>

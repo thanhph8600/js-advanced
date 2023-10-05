@@ -110,6 +110,7 @@ async function getOrder(id) {
 async function htmlProduct(item) {
   var html = await Promise.all(
     item.map(async (x) => {
+      console.log(x);
       var product = await getProductByID(x.product_id);
       return `<tr class=" align-center">
                     <td class="align-middle"><img src="/static/upload/${

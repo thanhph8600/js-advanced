@@ -1,5 +1,6 @@
 import AbstractView from "../AbstractView.js";
 import {getCategory, deleteCategory} from "../../data/category.js";
+import $ from "jquery";
 export default class extends AbstractView {
     constructor(params) {
         super(params);
@@ -19,9 +20,6 @@ export default class extends AbstractView {
             </thead>
             <tbody id="listCategory">
                 ${htmlListCategory}
-                <tr>
-                    <th colspan="6" class="py-5 d-flex justify-content-between"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></th>
-                </tr>
             </tbody>
         </table>
 
@@ -30,8 +28,10 @@ export default class extends AbstractView {
 }
 
 async function rederCategory(){
+  $('.loadAdmin').css('display','block')
     let categorys = await getCategory()
     var html = listCategory(categorys)
+  $('.loadAdmin').css('display','none')
     return html
 }
 

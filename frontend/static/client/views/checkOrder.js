@@ -2,6 +2,7 @@ import AbstractView from "./AbstractView.js";
 import { getOrder, checkStatus  } from "../../admin/data/order.js";
 import { getOrderDetail  } from "../../admin/data/orderDetail.js";
 import { convertToVND } from "../../admin/data/connectData.js";
+import $ from "jquery";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -34,8 +35,8 @@ $(document).on('click','.getOrderByEmail',async function(){
     var email = $('input[name=email]').val();
     var phone = $('input[name=phone]').val();
     var listOrders = orders.filter(item=>{
-        return (item.customer_email.trim() == email.trim()
-         && item.customer_phone.trim() == phone.trim() )
+        return (item.customer_email.trim() == email.trim() 
+        && item.customer_phone.trim() == phone.trim() )
     })
     if(listOrders.length == 0){
         $('.list-order').addClass('bg-white bg-opacity-40')

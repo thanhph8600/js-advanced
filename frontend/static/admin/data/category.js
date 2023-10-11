@@ -4,7 +4,6 @@ import {
     deleteData,
     getDataByID,
     updateData,
-    uploadFile
   } from "./connectData.js";
   
   const table = "category";

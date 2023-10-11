@@ -1,5 +1,4 @@
 import AbstractView from "./AbstractView.js";
-import { router } from "../index.js";
 import {
   getProductByID,
   getProductByIDCategory,
@@ -11,6 +10,8 @@ import {
   createComment,
   getCommentByID,
 } from "../../admin/data/comment.js";
+import Validator from "../../admin/data/validate.js";
+import $ from "jquery";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -89,9 +90,9 @@ export default class extends AbstractView {
             </div>
           </div>
         </div>
-        <div class=" py-5">
+        <div class=" py-5 ">
             <h2 class=" pb-2 uppercase text-xl border-b border-b-[--blue]">Thông tin sản phẩm</h2>
-            <p >${product.detail}</p>
+            <div class="detailProduct">${product.detail}</div>
         </div>
       </div>
     </section>
@@ -254,40 +255,45 @@ $(document).on("click", ".create-comment", async function () {
   var name = parent.children("input[name=name]");
   var email = parent.children("input[name=email]");
   var phone = parent.children("input[name=phone]");
-
-  var dataForm = {
-    product_id: idProduct,
-    comment_id: idComment,
-    comment: comment.val(),
-    name: name.val(),
-    email: email.val(),
-    phone: phone.val(),
-    star: star,
-    created_date: getDateNow(),
-  };
-  var newIdComment = await createComment(dataForm);
-  var newComment = await getCommentByID(newIdComment.id);
-  if (idComment == 0) {
-    var html = rederItemComment(newComment);
-    $(".listComment").prepend(html);
-    rederStar(idProduct)
-    comment.val('')
-    name.val('')
-    email.val('')
-    phone.val('')
-    $(".star").html('');
-    $(".danh-gia").removeClass("fa-star");
-    $(".danh-gia").removeClass("choose-star");
-    $(".danh-gia").addClass("fa-star-o");
-
-  } else {
-    $(".frameComment").html("");
-    var html = rederItemComment(
-      newComment,
-      "rounded-md bg-gray-100 border py-2 px-4 ml-10"
-    );
-    $(`.comment-${idComment}`).append(html);
+  if( Validator.valNull(comment ) && Validator.valName(name) 
+  && Validator.valEmail(email) && Validator.valPhone(phone)){
+    var dataForm = {
+      product_id: idProduct,
+      comment_id: idComment,
+      comment: comment.val(),
+      name: name.val(),
+      email: email.val(),
+      phone: phone.val(),
+      star: star,
+      created_date: getDateNow(),
+    };
+    var newIdComment = await createComment(dataForm);
+    var newComment = await getCommentByID(newIdComment.id);
+  
+    var html 
+    if (idComment == 0) {
+      html = rederItemComment(newComment);
+      $(".listComment").prepend(html);
+      rederStar(idProduct)
+      comment.val('')
+      name.val('')
+      email.val('')
+      phone.val('')
+      $(".star").html('');
+      $(".danh-gia").removeClass("fa-star");
+      $(".danh-gia").removeClass("choose-star");
+      $(".danh-gia").addClass("fa-star-o");
+  
+    } else {
+      $(".frameComment").html("");
+      html = rederItemComment(
+        newComment,
+        "rounded-md bg-gray-100 border py-2 px-4 ml-10"
+      );
+      $(`.comment-${idComment}`).append(html);
+    }
   }
+  
 });
 
 function renderStarComment(star) {
@@ -330,14 +336,14 @@ async function rederStar(id){
   if(commetProduct.length == 0){
     mediumStar =0
   }
-  var element = `<h3 class=" text-xl font-bold text-yellow-400">
+  var html = `<h3 class=" text-xl font-bold text-yellow-400">
               ${mediumStar.toFixed(1)}
                  ${renderStarComment(mediumStar)}
                 </h3>
                 <div class=" text-xs flex flex-col gap-1">
                   ${itemStar}
                 </div>`
-  $('.starProduct').html(element)
+  $('.starProduct').html(html)
 
   var reviews = `
     ${renderStarComment(mediumStar)}

@@ -7,7 +7,9 @@ import { createOrder } from "../../admin/data/order.js";
 import { createOrder_detail } from "../../admin/data/orderDetail.js";
 import { router } from "../index.js";
 import errPage from "../components/errPage.js";
-
+import $ from "jquery";
+import { getCoutCart } from "./home.js";
+import Validator from "../../admin/data/validate.js";
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -33,13 +35,13 @@ export default class extends AbstractView {
                     <div>
                         <label for="customer_name" class="block text-sm font-medium leading-6 text-gray-900">Full Name</label>
                         <div class="mt-2">
-                        <input type="text" name="customer_name" id="customer_name" autocomplete="customer_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="customer_name" id="customer_name" autocomplete="customer_name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6">
                         </div>
                     </div>
                     <div>
                         <label for="customer_email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                         <div class="mt-2">
-                        <input type="text" name="customer_email" id="customer_email" autocomplete="customer_email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="customer_email" id="customer_email" autocomplete="customer_email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6">
                         </div>
                     </div>
                 </div>
@@ -47,13 +49,13 @@ export default class extends AbstractView {
                     <div>
                         <label for="customer_phone" class="block text-sm font-medium leading-6 text-gray-900">Phone Number</label>
                         <div class="mt-2">
-                        <input type="text" name="customer_phone" id="customer_phone" autocomplete="customer_phone" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="customer_phone" id="customer_phone" autocomplete="customer_phone" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6">
                         </div>
                     </div>
                     <div>
                         <label for="" class="block text-sm font-medium leading-6 text-gray-900">City</label>
                         <div class="mt-2">
-                            <select id="city" name="city" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <select id="city" name="city" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6">
                                 <option value="" selected>Chọn tỉnh thành</option>           
                             </select>
                         </div>
@@ -63,7 +65,7 @@ export default class extends AbstractView {
                     <div>
                         <label for="" class="block text-sm font-medium leading-6 text-gray-900">District</label>
                         <div class="mt-2">
-                            <select id="district" name="district" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <select id="district" name="district" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6">
                                 <option value="" selected>Chọn quận huyện</option>           
                             </select>
                         </div>
@@ -71,7 +73,7 @@ export default class extends AbstractView {
                     <div>
                         <label for="" class="block text-sm font-medium leading-6 text-gray-900">Ward</label>
                         <div class="mt-2">
-                            <select id="ward" name="ward" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                            <select id="ward" name="ward" class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6">
                                 <option value="" selected>Chọn phường xã</option>           
                             </select>
                         </div>
@@ -80,7 +82,7 @@ export default class extends AbstractView {
                 <div class=" ">
                     <label for="" class="block text-sm font-medium leading-6 text-gray-900">Address</label>
                     <div class="mt-2">
-                        <input type="text" name="customer_address" id="customer_address" autocomplete="customer_address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <input type="text" name="customer_address" id="customer_address" autocomplete="customer_address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6">
                     </div>
                 </div>
                 <div class=" ">
@@ -203,37 +205,68 @@ $(document).on('change','input[name="payment"]',function(){
     }
 })
 
-$(document).on('click','.pay-now',async function(){
-    var name = $('input[name="customer_name"]').val()
-    var email = $('input[name="customer_email"]').val()
-    var phone = $('input[name="customer_phone"]').val()
-    var city = $('select[name="city"]').val()
-    var district = $('select[name="district"]').val()
-    var ward = $('select[name="ward"]').val()
-    var address = `${$('input[name="customer_address"]').val()} , ${ward}, ${district} , ${city}`
+$(document).on('change','select[name="city"], select[name="district"], select[name="ward"]',function(){
+    var value = $(this)
+    Validator.valSelect(value)
+})
 
-    let date =  getDateNow();
-    date= formatDate(date)
-    var dataOrder = {
-        customer_name: name,
-        customer_email: email,
-        customer_phone: phone,
-        customer_address: address,
-        created_date: date,
-        status: 1,
-    }
-    var order = await createOrder(dataOrder)
-    var listCart = await getLocal()
-    for (let i = 0; i < listCart.length; i++) {
-        var dataOrder_detail = {
-            order_id: order.id,
-            product_id: listCart[i].id,
-            quantity: listCart[i].quantity,
-            unit_price: listCart[i].price
+$(document).on('keyup','input[name="customer_name"]',function(){
+    var value = $(this)
+    Validator.valName(value)
+})
+
+$(document).on('keyup','input[name="customer_email"]',function(){
+    var value = $(this)
+    Validator.valEmail(value)
+})
+
+$(document).on('keyup','input[name="customer_phone"]',function(){
+    var value = $(this)
+    Validator.valPhone(value)
+})
+
+$(document).on('keyup','input[name="customer_address"]',function(){
+    var value = $(this)
+    Validator.valNull(value)
+})
+
+$(document).on('click','.pay-now',async function(){
+    var name = $('input[name="customer_name"]')
+    var email = $('input[name="customer_email"]')
+    var phone = $('input[name="customer_phone"]')
+    var city = $('select[name="city"]')
+    var district = $('select[name="district"]')
+    var ward = $('select[name="ward"]')
+    var address = $('input[name="customer_address"]')
+    if(Validator.valName(name) && Validator.valEmail(email) && Validator.valPhone(phone)
+    && Validator.valSelect(city) && Validator.valSelect(district) 
+&& Validator.valSelect(ward) && Validator.valNull(address)){
+        address = `${address.val()} , ${ward}, ${district} , ${city}`
+        let date =  getDateNow();
+        date= formatDate(date)
+        var dataOrder = {
+            customer_name: name.val(),
+            customer_email: email.val(),
+            customer_phone: phone.val(),
+            customer_address: address,
+            created_date: date,
+            status: 1,
         }
-        createOrder_detail(dataOrder_detail)
+        var order = await createOrder(dataOrder)
+        var listCart = await getLocal()
+        for (let i = 0; i < listCart.length; i++) {
+            var dataOrder_detail = {
+                order_id: order.id,
+                product_id: listCart[i].id,
+                quantity: listCart[i].quantity,
+                unit_price: listCart[i].price
+            }
+            createOrder_detail(dataOrder_detail)
+        }
+        await deleteLocal()
+        getCoutCart()
+        history.pushState(null, null, '/thanks');
+        router();
     }
-    deleteLocal()
-    history.pushState(null, null, '/thanks');
-    router();
+    
 })

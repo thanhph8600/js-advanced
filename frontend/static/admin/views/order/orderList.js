@@ -1,5 +1,6 @@
 import AbstractView from "../AbstractView.js";
 import { getOrder, checkStatus } from "../../data/order.js";
+import $ from "jquery";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -42,6 +43,7 @@ export default class extends AbstractView {
 }
 
 async function rederOrder(index = 99) {
+  $('.loadAdmin').css('display','block')
   let orders = await getOrder();
   if(index != 99){
     orders = orders.filter(item=>{
@@ -49,6 +51,7 @@ async function rederOrder(index = 99) {
     })
   }
   var html =  listOrder(orders);
+  $('.loadAdmin').css('display','none')
   return html
 }
 

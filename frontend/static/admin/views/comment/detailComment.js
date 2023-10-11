@@ -1,6 +1,8 @@
 import AbstractView from "../AbstractView.js";
 import { getComments,deleteComment } from "../../data/comment.js";
 import { renderStarComment } from "./listComment.js";
+import $ from "jquery";
+
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -32,6 +34,8 @@ export default class extends AbstractView {
 }
 
 async function renderComment(id){
+  $('.loadAdmin').css('display','block')
+
     var comments = await getComments()
     comments = comments.filter(item=>{
         return item.product_id == id
@@ -39,6 +43,8 @@ async function renderComment(id){
     var html = comments.map(item=>{
         return rederItemComment(item)
     })
+  $('.loadAdmin').css('display','none')
+
     return html.join('')
 }
 function rederItemComment(item){

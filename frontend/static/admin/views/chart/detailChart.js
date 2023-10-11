@@ -1,11 +1,10 @@
 import AbstractView from "../AbstractView.js";
-import {
-  getOrderDetail,
-  getOrderDetailByIdOrder,
-} from "../../data/orderDetail.js";
+import { getOrderDetail } from "../../data/orderDetail.js";
 import { getOrder } from "../../data/order.js";
 import { getProduct } from "../../data/product.js";
 import { convertToVND } from "../../data/connectData.js";
+
+import $ from "jquery";
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -33,9 +32,8 @@ export default class extends AbstractView {
   }
 }
 
-function rederChartDanhThu(xValues,yValues) {
+function rederChartDanhThu(xValues, yValues) {
   $(document).ready(function () {
-
     new Chart("myChart", {
       type: "line",
       data: {
@@ -52,8 +50,7 @@ function rederChartDanhThu(xValues,yValues) {
       },
       options: {
         legend: { display: false },
-        scales: {
-        },
+        scales: {},
       },
     });
   });
@@ -130,12 +127,12 @@ async function getValueOrderDetail() {
       }
     });
   });
-
-
   return data;
 }
 
 async function renderSoLuong() {
+  $('.loadAdmin').css('display','block')
+
   var details = await getValueOrderDetail();
   //Gọp những sản phẩm giống id
   let quantityByProductId = {};
@@ -159,6 +156,8 @@ async function renderSoLuong() {
     }
   }
 
+  $('.loadAdmin').css('display','none')
+
   //reder giao diện
   var name = newData.reduce((resu, item) => {
     resu.push(item.name);
@@ -169,10 +168,10 @@ async function renderSoLuong() {
     return resu;
   }, []);
   var sumChart = 0;
-  var eleTr = newData.map((item,index) => {
+  var eleTr = newData.map((item, index) => {
     sumChart += item.quantity;
     return `<tr>
-              <th scope="row">${index+1}</th>
+              <th scope="row">${index + 1}</th>
               <td>${item.name}</td>
               <td>${item.quantity}</td>
             </tr>
@@ -187,19 +186,20 @@ async function renderSoLuong() {
                   </tr>
                 </thead>
                 <tbody>
-                  ${eleTr.join('')}
+                  ${eleTr.join("")}
                 </tbody>
-              </table>`
+              </table>`;
   document.querySelector(".listChart").innerHTML = table;
   document.querySelector(
     ".sumChart"
   ).innerHTML = `Tổng số lượng sản phẩm bán ra: ${sumChart}`;
   rederChart(name, value);
 }
+ 
+export async function renderDanhThu() {
+  $('.loadAdmin').css('display','block')
 
-async function renderDanhThu() {
   var orders = await getValueOrderDetail();
-
   //thêm tổng số tiền và xóa đi những phần tử có ngày giống nhau
   let newData = orders.reduce((accumulator, current) => {
     current = {
@@ -215,9 +215,10 @@ async function renderDanhThu() {
     } else {
       accumulator.push({ ...current });
     }
+  $('.loadAdmin').css('display','none')
+
     return accumulator;
   }, []);
-
 
   //Xếp xếp giảm dần ngày
   newData = newData.sort((a, b) => {
@@ -226,17 +227,16 @@ async function renderDanhThu() {
 
     return dateB - dateA;
   });
-  
 
   //render giao dien
-  var eleTr = newData.map((item,index)=>{
+  var eleTr = newData.map((item, index) => {
     return `<tr>
-              <th scope="row">${index+1}</th>
+              <th scope="row">${index + 1}</th>
               <td>${item.created_date}</td>
               <td>${convertToVND(item.sum)}</td>
             </tr>
-    `
-  })
+    `;
+  });
   var table = `
     <table class="table">
       <thead>
@@ -247,19 +247,19 @@ async function renderDanhThu() {
         </tr>
       </thead>
       <tbody>
-        ${eleTr.join('')}
+        ${eleTr.join("")}
       </tbody>
     </table>
-  `
-  $('.listChart').html(table)
+  `;
+  $(".listChart").html(table);
 
-  var sum = newData.reduce((cur,item)=>{
-    return cur +=item.sum
-  },0)
-  $('.sumChart').html(`Tổng số danh thu: ${convertToVND(sum)}`)
+  var sum = newData.reduce((cur, item) => {
+    return (cur += item.sum);
+  }, 0);
+  $(".sumChart").html(`Tổng số danh thu: ${convertToVND(sum)}`);
 
   //Lấy 7 ngày đầu tiên,
-  newData = newData.slice(0,6)
+  newData = newData.slice(0, 6);
   newData = newData.sort((a, b) => {
     let dateA = new Date(formatDate2(a.created_date));
     let dateB = new Date(formatDate2(b.created_date));
@@ -272,11 +272,10 @@ async function renderDanhThu() {
   var arrPirce = newData.map((item) => {
     return item.sum;
   });
-  rederChartDanhThu(arrDate,arrPirce);
+  rederChartDanhThu(arrDate, arrPirce);
 }
-
 
 function formatDate2(dateString) {
   var dateParts = dateString.split("-");
-    return dateParts[1] + "-" + dateParts[0] + "-" + dateParts[2];
+  return dateParts[1] + "-" + dateParts[0] + "-" + dateParts[2];
 }

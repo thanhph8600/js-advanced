@@ -1,5 +1,4 @@
 import AbstractView from "../AbstractView.js";
-import { getOrderDetail } from "../../data/orderDetail.js";
 export default class extends AbstractView {
     constructor(params) {
         super(params);

@@ -3,6 +3,8 @@ import { getOrderByID, updateOrder } from "../../data/order.js";
 import { getOrderDetail } from "../../data/orderDetail.js";
 import { getProductByID } from "../../data/product.js";
 import { convertToVND,formatDate } from "../../data/connectData.js";
+import $ from "jquery";
+
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -37,23 +39,23 @@ export default class extends AbstractView {
           <h3>Thông tin người mua</h3>
           <div class="d-flex gap-2 py-1 align-items-center">
             <p class=" mb-0">Tên: </p>
-            <input type="text"  name="name"  class="form-control  w-75  input no-border-outline" value=" ${customer_name} "  readonly>
+            <input type="text"  name="name"  style="background-color:white" class="form-control  w-75  input no-border-outline" value=" ${customer_name} "  readonly>
           </div>
           <div class="d-flex gap-2 py-1 align-items-center">
             <p class=" mb-0">Email: </p>
-            <input type="text" name="email"  class="form-control  w-75  input no-border-outline" value=" ${customer_email} "  readonly> 
+            <input type="text" name="email"  style="background-color:white" class="form-control  w-75  input no-border-outline" value=" ${customer_email} "  readonly> 
           </div>
           <div class="d-flex gap-2 py-1 align-items-center">
             <p class=" mb-0">Số điện thoại: </p>
-            <input type="text" name="phone"  class="form-control  w-75  input no-border-outline" value=" ${customer_phone} "  readonly> 
+            <input type="text" name="phone"  style="background-color:white" class="form-control  w-75  input no-border-outline" value=" ${customer_phone} "  readonly> 
           </div>
           <div class="d-flex gap-2 py-1 align-items-center">
             <p class=" mb-0">Địa chỉ:</p> 
-            <input type="text"  name="address" class="form-control w-75 input no-border-outline" value=" ${customer_address}"  readonly> 
+            <input type="text"  name="address" style="background-color:white" class="form-control w-75 input no-border-outline" value=" ${customer_address}"  readonly> 
           </div>
           <div class="d-flex gap-2 py-1 align-items-center">
             <p class=" mb-0">Ngày mua:</p> 
-            <input type="date"  name="date" class="form-control w-75 input no-border-outline"  value="${created_date}" readonly> 
+            <input type="date"  name="date" style="background-color:white" class="form-control w-75 input no-border-outline"  value="${created_date}" readonly> 
           </div>
           <div class=" d-flex py-2 items-center justify-content-center">
             <button class="btn btn-warning edit-order" type="button">
@@ -102,12 +104,15 @@ export default class extends AbstractView {
 }
 
 async function getOrder(id) {
+  $('.loadAdmin').css('display','block')
   var orders = await getOrderDetail();
   orders = orders.filter((item) => item.order_id == id);
+  $('.loadAdmin').css('display','none')
   return orders;
 }
 
 async function htmlProduct(item) {
+  $('.loadAdmin').css('display','block')
   var html = await Promise.all(
     item.map(async (x) => {
       console.log(x);
@@ -122,6 +127,7 @@ async function htmlProduct(item) {
                 </tr>`;
     })
   );
+  $('.loadAdmin').css('display','none')
   return html;
 }
 
@@ -179,17 +185,18 @@ $(document).on("click", 'button[name="status"]', async function () {
   let status = $(this).attr("data");
   let formData = getValueUserOrder()
   formData.status = Number(status)
+  var htmlStatus
   if (
     $('input[name="status"]').val() != 0 &&
     status == Number($('input[name="status"]').val()) + 1
   ) {
-    var htmlStatus = rederStatus(status);
+    htmlStatus = rederStatus(status);
     $(document).ready(function () {
       $("#status").html(htmlStatus);
     });
     updateOrder(id, formData);
   } else if ($('input[name="status"]').val() <= 2 && status == 0) {
-    var htmlStatus = rederStatus(status);
+    htmlStatus = rederStatus(status);
     $(document).ready(function () {
       $("#status").html(htmlStatus);
     });

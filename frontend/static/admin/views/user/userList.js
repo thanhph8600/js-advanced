@@ -1,5 +1,6 @@
 import AbstractView from "../AbstractView.js";
 import { getUser, deleteUser } from "../../data/user.js";
+import $ from "jquery";
 
 export default class extends AbstractView {
     constructor(params) {

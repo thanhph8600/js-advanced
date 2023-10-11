@@ -1,10 +1,11 @@
 import AbstractView from "./AbstractView.js";
-import { getOrder, checkStatus, getOrderByID } from "../../admin/data/order.js";
+import { checkStatus, getOrderByID } from "../../admin/data/order.js";
 import { getOrderDetail } from "../../admin/data/orderDetail.js";
 import { convertToVND } from "../../admin/data/connectData.js";
 import { getProductByID } from "../../admin/data/product.js";
 import { updateOrder } from "../../admin/data/order.js";
 import { router } from "../index.js";
+import $ from "jquery";
 
 export default class extends AbstractView {
   constructor(params) {

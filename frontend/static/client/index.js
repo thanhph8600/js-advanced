@@ -1,7 +1,6 @@
 import frame from "./components/frame.js";
 import routes from "./routes/routes.js";
 
-
 async function start(){
     document.querySelector('#app').innerHTML = await frame();
     window.addEventListener("popstate", router);
@@ -55,6 +54,7 @@ export const router = async () => {
     }
 
     const view = new match.route.view(getParams(match));
+
 
     document.querySelector("#main").innerHTML = await view.getHtml();
     window.scrollTo({ top: 0, behavior: 'smooth' });

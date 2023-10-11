@@ -1,16 +1,12 @@
 import AbstractView from "./AbstractView.js";
-import { router } from "../index.js";
+import $ from "jquery";
 
-import {
-  convertToVND,
-  removeVietnameseTones,
-} from "../../admin/data/connectData.js";
+import { convertToVND} from "../../admin/data/connectData.js";
 import {
   getItemLocal,
   getLocal,
   updateLocal,
   deleteItemCart,
-  deleteLocal
 } from "../components/localstorage.js";
 import { getCoutCart } from "./home.js";
 import { errPageCart } from "../components/errPage.js";
@@ -145,6 +141,7 @@ $(document).on("change", ".valueInput", async function () {
   console.log(id);
   var value = $(this).val();
   if (value > 0 && value < 10) {
+    value
   } else if (value > 9) {
     $(this).val(9);
     value = 9;

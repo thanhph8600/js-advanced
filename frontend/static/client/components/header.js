@@ -1,6 +1,8 @@
 import { getProduct } from "../../admin/data/product.js";
 import { removeVietnameseTones } from "../../admin/data/connectData.js";
 import { router } from "../index.js";
+import $ from "jquery";
+
 export default function header() {
         return `
         <header>
@@ -58,7 +60,7 @@ $(document).on('keyup keyon','input[name=search]', async function(){
   if(value){
     var products = await getProduct()
     products = products.filter(item=>{
-      return removeVietnameseTones(item.name).includes(value)
+      return removeVietnameseTones(item.name).includes(removeVietnameseTones(value))
     })
     if(products.length == 0){
       $('.search').html('')

@@ -1,6 +1,8 @@
 import AbstractView from "../AbstractView.js";
 import { getCategoryByID ,updateCategory} from "../../data/category.js";
 import { router } from "../../index.js";
+import Validator from "../../data/validate.js";
+import $ from "jquery";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -28,15 +30,21 @@ export default class extends AbstractView {
 }
 
 $(document).on("click", ".updateCategory", async function (e) {
+  $('.loadAdmin').css('display','block')
   e.preventDefault();
-  let name = $(".name").val();
-  let idCategory = $('input[name="idCategory"]').val();
-  let formData = {
-    name: name,
-  };
-  await updateCategory(idCategory, formData);
-  history.pushState(null, null, "/category");
-  router();
+  let name = $(`input[name="name"]`);
+  if(Validator.valName(name)){
+    let idCategory = $('input[name="idCategory"]').val();
+    let formData = {
+      name: name.val(),
+    };
+    await updateCategory(idCategory, formData);
+    history.pushState(null, null, "/category");
+    router();
+  }else{
+    console.log(name);
+  }
+  $('.loadAdmin').css('display','none')
 });
 
 

@@ -3,6 +3,9 @@ import { createProduct } from "../../data/product.js";
 import { uploadFile } from "../../data/connectData.js";
 import { getCategory } from "../../data/category.js";
 import { router } from "../../index.js";
+import Validator from "../../data/validate.js";
+import $ from "jquery";
+
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -48,12 +51,15 @@ export default class extends AbstractView {
 }
 
 async function category() {
+  $('.loadAdmin').css('display','block')
   let category = await getCategory();
   let html = category.map((x) => {
     return `<option value="${x.id}">${x.name}</option>`;
   });
   $(".form-select").html(html.join(""));
   loadCK5()
+  $('.loadAdmin').css('display','none')
+
 }
 
 
@@ -83,29 +89,35 @@ function loadCK5(){
 			console.error( error );
 		} );
   }
+
 }
 
 $(document).on("click", ".createProduct", async function (e) {
+  $('.loadAdmin').css('display','block')
   e.preventDefault();
-  let name = $(".name").val();
-  let category = document.querySelector('select[name="category"]').value;
-  let price = document.querySelector('input[name="price"]').value;
+  let name = $(`input[name="name"]`);
+  let category = $('select[name="category"]');
+  let price = $('input[name="price"]');
   var detail = document.querySelector('.ck-editor__editable').innerHTML;
-  console.log(detail);
-  var upload = new FormData();
-  var fileInput = document.querySelector("#formFile");
+  var fileInput =  document.querySelector("#formFile");
+  if(Validator.valNull(name) && Validator.valSelect(category) &&
+   Validator.valNumber(price) && Validator.valUploadFile(fileInput)){
+    var upload = new FormData();
+    upload.append("formFile", fileInput.files[0]);
+    uploadFile(upload).then(async (res) => {
+      let formData = {
+        name: name.val(),
+        cate_id:category.val(),
+        price: Number(price.val()),
+        detail: detail,
+        thumb: res,
+      };
+      await createProduct(formData);
+      history.pushState(null, null, "/product");
+      $('.loadAdmin').css('display','none')
+      router();
+    });
+  }
 
-  upload.append("formFile", fileInput.files[0]);
-  uploadFile(upload).then(async (res) => {
-    let formData = {
-      name: name,
-      cate_id:category,
-      price: Number(price),
-      detail: detail,
-      thumb: res,
-    };
-    await createProduct(formData);
-    history.pushState(null, null, "/product");
-    router();
-  });
+  
 });

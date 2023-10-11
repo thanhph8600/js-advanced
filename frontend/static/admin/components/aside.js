@@ -65,6 +65,14 @@ export default function aside() {
                 </a>
               </li>
               <li class="sidebar-item">
+                <a class="sidebar-link" href="/message" aria-expanded="false" data-link > 
+                  <span style="pointer-events: none">
+                    <i class="fa fa-comments" aria-hidden="true"></i>
+                  </span>
+                  <span style="pointer-events: none" class="hide-menu">Message</span>
+                </a>
+              </li>
+              <li class="sidebar-item">
                 <a class="sidebar-link" href="/chart" aria-expanded="false" data-link > 
                   <span style="pointer-events: none">
                     <i class="fa fa-line-chart" aria-hidden="true"></i>
@@ -72,9 +80,7 @@ export default function aside() {
                   <span style="pointer-events: none" class="hide-menu">Chart</span>
                 </a>
               </li>
-
             </ul>
-
           </nav>
         </div>
       </aside>

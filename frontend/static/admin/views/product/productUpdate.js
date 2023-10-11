@@ -1,9 +1,10 @@
 import AbstractView from "../AbstractView.js";
 import { getProductByID, updateProduct } from "../../data/product.js";
 import { getCategory } from "../../data/category.js";
-import { uploadFile } from "../../data/connectData.js";
+import { uploadFile,deleteFile } from "../../data/connectData.js";
 import { router } from "../../index.js";
-
+import Validator from "../../data/validate.js";
+import $ from "jquery";
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -57,6 +58,7 @@ export default class extends AbstractView {
 }
 
 async function category(id) {
+  $('.loadAdmin').css('display','block')
   let category = await getCategory();
   let html = category.map((x) => {
     if (x.id == id) {
@@ -67,6 +69,7 @@ async function category(id) {
   });
   $(".form-select").html(html.join(""));
   loadCK5();
+  $('.loadAdmin').css('display','none')
 }
 
 $(document).ready(function () {
@@ -87,29 +90,37 @@ $(document).ready(function () {
 
 $(document).on("click", ".updateProduct", async function (e) {
   e.preventDefault();
-  let name = $(".name").val();
-  let category = document.querySelector('select[name="category"]').value;
-  let price = document.querySelector('input[name="price"]').value;
-  var detail = document.querySelector(".ck-editor__editable").innerHTML;
+  let name = $(".name");
+  let category =$('select[name="category"]');
+  let price = $('input[name="price"]');
   let idProduct = $('input[name="idProduct"]').val();
+  var detail = document.querySelector(".ck-editor__editable").innerHTML;
   var thumb = $('input[name="thumbOld"]').val();
   var fileInput = document.querySelector("#formFile");
-  if (fileInput.files[0]) {
-    var upload = new FormData();
-    upload.append("formFile", fileInput.files[0]);
-    uploadFile(upload).then(async (res) => {
-      update(idProduct, name, category, price, detail, res);
-    });
-  } else {
-    update(idProduct, name, category, price, detail, thumb);
-  }
+  
+  if(Validator.valNull(name) && Validator.valSelect(category) &&
+   Validator.valNumber(price)){
+    if (fileInput.files[0]) {
+      if( Validator.valUploadFile(fileInput)){
+        var upload = new FormData();
+        upload.append("formFile", fileInput.files[0]);
+        deleteFile(thumb)
+        uploadFile(upload).then(async (res) => {
+          update(idProduct, name, category, price, detail, res);
+        });
+      }
+    } else {
+      update(idProduct, name, category, price, detail, thumb);
+    }
+   }
+  
 });
 
 async function update(idProduct, name, category, price, detail, thumb) {
   let formData = {
-    name: name,
-    cate_id: category,
-    price: Number(price),
+    name: name.val(),
+    cate_id: category.val(),
+    price: Number(price.val()),
     detail: detail,
     thumb: thumb,
   };

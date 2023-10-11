@@ -15,11 +15,13 @@ import productUpdate from "../views/product/productUpdate.js";
 import orderList from "../views/order/orderList.js";
 import orderDetail from "../views/order/orderDetail.js";
 
-import chart from "../views/chart/chart.js";
+import chart from "../views/chart/listChart.js";
 import detailChart from "../views/chart/detailChart.js";
 
 import listComment from "../views/comment/listComment.js";
 import detailComment from "../views/comment/detailComment.js";
+
+import menuMess from "../views/messenger/menuMess.js";
 const routes = [
     { path: "/", view: Dashboard },
     { path: "/user", view: userList },
@@ -37,9 +39,8 @@ const routes = [
     { path: "/chart/:name", view: detailChart },
     { path: "/comments", view: listComment },
     { path: "/comment/:id", view: detailComment },
-
-
-
+    { path: "/message", view: menuMess },
+    { path: "/message/:id", view: menuMess },
 ];
 
 export default routes

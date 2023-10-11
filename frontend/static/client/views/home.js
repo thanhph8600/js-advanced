@@ -4,6 +4,8 @@ import { getProduct } from "../../admin/data/product.js";
 import { getCategoryByID } from "../../admin/data/category.js";
 import { convertToVND } from "../../admin/data/connectData.js";
 import { getLocal, setLocalstorage } from "../components/localstorage.js";
+import $ from "jquery";
+
 export default class extends AbstractView {
   constructor(params) {
     super(params);

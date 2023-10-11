@@ -1,7 +1,7 @@
 import AbstractView from "../AbstractView.js";
 import { getProduct, deleteProduct } from "../../data/product.js";
 import { convertToVND } from "../../data/connectData.js";
-
+import $ from "jquery";
 export default class extends AbstractView {
     constructor(params) {
         super(params);
@@ -42,8 +42,12 @@ export default class extends AbstractView {
 var soSP = 4;
 
 async function rederProduct(){
+  $('.loadAdmin').css('display','block')
+
     let products = await getProduct();
     var html =  listProduct(products)
+  $('.loadAdmin').css('display','none')
+
     return html
 }
 
@@ -91,17 +95,23 @@ $(document).on('click','.delete', function(){
 
 
 async function phanTrang(soTrang){
+  $('.loadAdmin').css('display','block')
+
     var products = await getProduct()
-    var soTrang = Math.round(products.length / soSP)
+    soTrang = Math.round(products.length / soSP)
     var html = ''
     for (let i = 0; i < soTrang; i++) {
         html += `<li class="page-item"><button data="${i+1}"  class="page-link phan-trang">${i+1}</button></li>`
     }
+  $('.loadAdmin').css('display','none')
+
     return html
 }
 
 var index = 1;
 $(document).on('click','.phan-trang',async function(){
+  $('.loadAdmin').css('display','block')
+
     var data = $(this).attr('data')
     if(data == "prev"){
         index  = index-1
@@ -113,4 +123,6 @@ $(document).on('click','.phan-trang',async function(){
     var products = await getProduct()
     var html = listProduct(products,index)
     $('#listProduct').html(html)
+  $('.loadAdmin').css('display','none')
+
 })

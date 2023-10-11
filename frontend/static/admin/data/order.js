@@ -1,10 +1,8 @@
 import {
   getData,
   createData,
-  deleteData,
   getDataByID,
   updateData,
-  uploadFile,
 } from "./connectData.js";
 
 const table = "orders";

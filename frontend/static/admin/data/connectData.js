@@ -1,4 +1,5 @@
 import axios from 'axios';
+import $ from "jquery";
 
 //GET JSON Sever
 // var url = "http://localhost:3000/";
@@ -45,16 +46,19 @@ export async function getData(table) {
   onLoad()
   let response = await axios.get(url + table + '.json');
   response = response.data
+  if(response){
+    response =  Object.entries(response).map(([key,value]) =>{
+      return {
+        id:key,
+        ...value
+      }
+    })
+    
+  }
   
-  response =  Object.entries(response).map(([key,value]) =>{
-    return {
-      id:key,
-      ...value
-    }
-  })
   offLoad()
-
   return response;
+  
 }
 
 export async function getDataByID(table, id) {
@@ -144,6 +148,22 @@ export async function uploadFile(upload) {
   });
 }
 
+export async function deleteFile(thumb) {
+  return new Promise((resolve) => {
+  $.ajax({
+    url: '/delete_file',
+    type: 'POST',
+    data: {
+        filePath:`/static/upload/${thumb}`
+       },
+    success: function() {
+        console.log('Tệp đã được xóa thành công');
+        resolve()
+    }
+   });
+  });
+}
+
 
 export function convertToVND(amount) {
   return amount.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
@@ -186,11 +206,43 @@ export function getDateNow() {
   return formattedDate
 }
 
+export function getTimeNow() {
+  let date = new Date();
+  let hours = String(date.getHours()).padStart(2, '0');
+  let minutes = String(date.getMinutes()).padStart(2, '0');
+
+  let formattedDate = `${hours}:${minutes}`;
+  return formattedDate
+}
+
 export function formatDate(dateString) {
   var dateParts = dateString.split("-");
   if(dateParts[2].length!=4){
     return dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
   }else{
     return dateString
+  }
+}
+
+export async function chatAI(content){
+  const options = {
+    method: 'POST',
+    url: 'https://lemurbot.p.rapidapi.com/chat',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '0b6d5a7204msh23c6b42b1e06aaap19ad4ejsn36591e2cc42c',
+      'X-RapidAPI-Host': 'lemurbot.p.rapidapi.com'
+    },
+    data: {
+      bot: 'dilly',
+      client: 'd531e3bd-b6c3-4f3f-bb58-a6632cbed5e2',
+      message: content
+    }
+  };
+  try {
+    const response = await axios.request(options);
+    return response.data
+  } catch (error) {
+    console.error(error);
   }
 }

@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const multer = require("multer");
+var fs = require('fs');
 // var upload = multer({ dest: "/frontend/static/upload/" });
 
 const app = express();
@@ -44,6 +45,20 @@ app.post("/upload",upload.single('formFile'), (req, res, next) => {
     nameFile: req.nameFile,
   });
 });
+
+
+app.post('/delete_file', function(req, res){
+  var filePath = req.body.filePath; // đường dẫn tới tệp cần xóa
+  console.log(filePath);
+  fs.unlink(filePath, function(err){
+      if(err){
+          console.log(err);
+          return res.status(500).send('An error occurred while deleting the file.');
+      }
+      res.send('File deleted successfully.');
+  });
+});
+
 
 app.get("/*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "frontend", "admin.html"));

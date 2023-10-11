@@ -1,7 +1,7 @@
 import AbstractView from "../AbstractView.js";
 import { getComments } from "../../data/comment.js";
 import { getProductByID } from "../../data/product.js";
-
+import $ from "jquery"
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -30,7 +30,10 @@ export default class extends AbstractView {
 }
 
 async function rederComment() {
+  $('.loadAdmin').css('display','block')
+
   let comments = await getComments();
+
   var arr = []
   for (let i = 0; i < comments.length; i++) {
     let element = comments[i]
@@ -60,6 +63,8 @@ async function rederComment() {
     }
   }
   var html = await listComment(arr);
+  $('.loadAdmin').css('display','none')
+
   return html
 }
 
@@ -74,8 +79,8 @@ async function listComment(comments) {
 }
 
 async function itemComment(item) {
-    console.log(star/quantity);
     var { id,  product_id, quantity,quantityStar, star } = item;
+
     var product = await getProductByID(product_id)
     return `<tr class="idComment${id} align-center"> 
                 <td class="align-middle text-center">${product.name}</td>
@@ -91,6 +96,8 @@ async function itemComment(item) {
 }
 
 export function renderStarComment(star) {
+    star = Math.round(star)
+    console.log(star);
     var html = ``;
     for (let i = 0; i < Number(star); i++) {
       html += `<span><i class="fa fa-star pl-1 text-warning text-xs" aria-hidden="true"></i></span>`;

@@ -1,14 +1,14 @@
 import AbstractView from "./AbstractView.js";
-import { router } from "../index.js";
 import {
   getProduct,
-  getProductByID,
   getProductByIDCategory,
 } from "../../admin/data/product.js";
 import { getCategory, getCategoryByID } from "../../admin/data/category.js";
 import { rederItemProduct } from "./home.js";
 import { convertToVND, removeVietnameseTones } from "../../admin/data/connectData.js";
 import errPage from "../components/errPage.js";
+import $ from "jquery";
+
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -121,21 +121,21 @@ async function findProducts(value){
   return products
 }
 
-async function checkparmas(value){
-  var products = [];
-  if (value == 0) {
-    products = await getProduct();
-  } else if (value.id) {
-    products = await getProductByIDCategory(value.id);
-  } else if (value.search) {
-    products = await getProduct();
-    products = products.filter((item) => {
-      var name = removeVietnameseTones(item.name);
-      return name.includes(value.search);
-    });
-  }
-  return products
-}
+// async function checkparmas(value){
+//   var products = [];
+//   if (value == 0) {
+//     products = await getProduct();
+//   } else if (value.id) {
+//     products = await getProductByIDCategory(value.id);
+//   } else if (value.search) {
+//     products = await getProduct();
+//     products = products.filter((item) => {
+//       var name = removeVietnameseTones(item.name);
+//       return name.includes(value.search);
+//     });
+//   }
+//   return products
+// }
 
 function rangeInput() {
   $(document).ready(function () {

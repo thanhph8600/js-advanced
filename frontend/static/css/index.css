@@ -81,3 +81,38 @@ a * {
     background-position: 0% center;
   }
 }
+
+.img-chat{
+  transition: width 0.4s ease-in-out;
+
+}
+.img-chat:hover{
+  width: 250px;
+}
+.img-chat:hover .absolute{
+  position: static;
+}
+
+#chat2 .form-control {
+  border-color: transparent;
+  }
+  
+  #chat2 .form-control:focus {
+  border-color: transparent;
+  box-shadow: inset 0px 0px 0px 1px transparent;
+  }
+
+
+  
+  .divider:after,
+  .divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #567FC3;
+   height:fit-content;
+  }
+
+  .detailProduct img {
+    width: 400px;
+  }

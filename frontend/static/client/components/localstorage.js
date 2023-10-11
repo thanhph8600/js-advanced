@@ -6,10 +6,11 @@ export async function setLocalstorage(idProduct) {
     quantity: 1,
     ...product,
   };
+  var value 
   if (!localStorage.getItem("product")) {
     var arr = [];
     arr.push(product);
-    var value = JSON.stringify(arr);
+    value = JSON.stringify(arr);
     localStorage.setItem("product", value);
   } else {
     var jsonLocal = localStorage.getItem("product");
@@ -28,7 +29,7 @@ export async function setLocalstorage(idProduct) {
     if (!itemExists) {
       valueLocal.push(product);
     }
-    var value = JSON.stringify(valueLocal);
+    value = JSON.stringify(valueLocal);
   }
   localStorage.setItem("product", value);
 }
@@ -39,10 +40,12 @@ export async function updateLocal(idProduct, quantity) {
     quantity: quantity,
     ...product,
   };
+
+  var value
   if (!localStorage.getItem("product")) {
     var arr = [];
     arr.push(product);
-    var value = JSON.stringify(arr);
+    value = JSON.stringify(arr);
     localStorage.setItem("product", value);
   } else {
     var jsonLocal = localStorage.getItem("product");
@@ -61,7 +64,7 @@ export async function updateLocal(idProduct, quantity) {
     if (!itemExists) {
       valueLocal.push(product);
     }
-    var value = JSON.stringify(valueLocal);
+    value = JSON.stringify(valueLocal);
   }
   localStorage.setItem("product", value);
 }

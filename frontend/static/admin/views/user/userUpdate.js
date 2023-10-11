@@ -2,6 +2,7 @@ import AbstractView from "../AbstractView.js";
 import { getUserByID, updateUser } from "../../data/user.js";
 import { uploadFile } from "../../data/connectData.js";
 import { router } from "../../index.js";
+import $ from "jquery";
 
 export default class extends AbstractView {
   constructor(params) {

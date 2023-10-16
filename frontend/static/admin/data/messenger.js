@@ -16,9 +16,15 @@ import {
     let result = await getDataByID(table, id);
     return result;
   }
+  
+  export async function getListMessengerByID(id) {
+    let result = await getData(table, id + "/mess");
+    return result;
+  }
 
   export async function getMessengerDetailByID(idMess,idDetail) {
     let result = await getDataByID(table + "/" + idMess + "/mess", idDetail);
+    console.log(result);
     return result;
   }
   

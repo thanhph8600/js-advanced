@@ -40,66 +40,6 @@ export async function deleteData(table, data) {
 }
 
 
-//---------------------------------------------------//
-//GET FIREBASE
-// var url = "https://popo-api-5-default-rtdb.firebaseio.com/";
-// export async function getData(table) {
-//   onLoad()
-//   let response = await axios.get(url + table + '.json');
-//   response = response.data
-//   if(response){
-//     response =  Object.entries(response).map(([key,value]) =>{
-//       return {
-//         id:key,
-//         ...value
-//       }
-//     })
-    
-//   }
-  
-//   offLoad()
-//   return response;
-  
-// }
-
-// export async function getDataByID(table, id) {
-//   onLoad()
-//   let response = await axios.get(url + table + "/" + id + '.json');
-//   response = response.data
-//   response = {
-//     id: id,
-//     ...response
-//   }
-//   offLoad()
-//   return response;
-// }
-
-// export async function createData(table, data) {
-//   onLoad()
-//   let response = await axios.post(url + table + '.json', data);
-//   response =  response.data
-//   response = {
-//     id: response.name
-//   }
-//   offLoad()
-//   return response;
-// }
-
-// export async function updateData(table, data) {
-//   onLoad()
-
-//   let response = await axios.patch(url + table + '.json', data);
-//   offLoad()
-//   return response.data;
-// }
-
-// export async function deleteData(table, data) {
-//   onLoad()
-//   let response = await axios.delete(url + table + "/" + data + '.json');
-//   offLoad()
-//   return response.data;
-// }
-
 
 //---------------------------------------------------//
 //Province Open API || GET TỈNH THÀNH

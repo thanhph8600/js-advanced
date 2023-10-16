@@ -1,9 +1,18 @@
 import { getProduct } from "../../admin/data/product.js";
 import { removeVietnameseTones } from "../../admin/data/connectData.js";
+import { getUserByID } from "../../admin/data/user.js";
 import { router } from "../index.js";
 import $ from "jquery";
 
 export default function header() {
+        var userLogin = sessionStorage.getItem('idUserLogin')
+        if(userLogin){
+          let user = getUserByID(userLogin)
+          user.then(x=>{
+            $('.itemLogin').html('<i class="pr-1 fa fa-user-circle-o" aria-hidden="true"></i>'+x.name)
+            $('.itemLogin').attr('href','/detail-user')
+          })
+        }
         return `
         <header>
           <div class="bg-white py-4">
@@ -39,16 +48,15 @@ export default function header() {
           </div>
           <div class=" bg-[#FDAFBC] py-2 text-base uppercase ">
             <nav class="container lg:w-4/5 m-auto flex justify-between">
-              <a href="/home" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>trang chủ</a>
+              <a href="/home" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link><i class="fa fa-home" aria-hidden="true"></i> trang chủ</a>
               <a href="/list-products/search=teddy" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>bộ sưu tập gấu teddy</a>
               <a href="/list-products" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>bộ sưu tập</a>
-              <a href="" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>thú bông</a>
               <a href="/cart" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>
                 giỏ hàng <i class="fa fa-shopping-cart pl-2 text-xl" aria-hidden="true"></i> 
                 <p class="countCart absolute top-[-10px] border right-[-20px] hover:bg-white h-6 w-6 rounded-full flex items-center justify-center bg-[white] text-[--rose-2]">0</p>
               </a>
               <a href="/check-order" class="text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>Tra cứu đơn hàng</a>
-
+              <a href="/login" class="itemLogin text-white relative hover:bg-[--rose-2]  hover:text-white px-4 rounded-md shadow-md py-1" data-link>Đăng nhập</a>
             </nav>
           </div>
         </header>

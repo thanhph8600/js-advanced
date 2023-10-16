@@ -40,7 +40,7 @@ export default class extends AbstractView {
                 <input class="form-control" name="formFile" type="file" id="formFile">
             </div>
             <div  class="mb-3">
-                <img  id="previewImage"  style="width:300px" class=" rounded-5" src="/static/upload/${thumb}" alt="">
+                <img  id="previewImage"  style="width:120px" class=" rounded-5" src="/static/upload/${thumb}" alt="">
             </div>
             <span  class="update btn btn-primary">Update user</span>
             <input type="hidden" name="idUser" value="${id}">

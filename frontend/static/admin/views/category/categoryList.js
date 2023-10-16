@@ -13,9 +13,9 @@ export default class extends AbstractView {
         <table class="table">
             <thead>
                 <tr class="align-center">
-                    <th class="align-middle text-center" scope="col">name</th>
+                    <th class="align-middle " scope="col">name</th>
                     <th class="align-middle text-center" scope="col"></th>
-                    <th class="align-middle text-center" scope="col"><a type="button" data-link href="/createCategory" class="btn btn-secondary">Thêm</a></th>
+                    <th class="align-middle text-center" scope="col"><a type="button" data-link href="/createCategory" class="btn btn-success ">Thêm</a></th>
                 </tr>
             </thead>
             <tbody id="listCategory">
@@ -46,8 +46,8 @@ function itemCategory(item){
     var {id,name} = item
     return `<tr class="idCategory${id} align-center">
 
-                <td class="align-middle text-center">${name}</td>
-                <td class="align-middle text-center"><a href="category/${id}" data-link type="button" class="edit btn btn-success">Edit</a></td>
+                <td class="align-middle">${name}</td>
+                <td class="align-middle text-center"><a href="category/${id}" data-link type="button" class="edit btn btn-warning">Edit</a></td>
                 <td class="align-middle text-center"><button type="button" idCategory="${id}" class="delete btn btn-danger">Delete</button></td>
             </tr>`
 }

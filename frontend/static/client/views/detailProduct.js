@@ -12,6 +12,7 @@ import {
 } from "../../admin/data/comment.js";
 import Validator from "../../admin/data/validate.js";
 import $ from "jquery";
+import { getUserByID } from "../../admin/data/user.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -117,7 +118,7 @@ export default class extends AbstractView {
           </div>
         </div>
         
-        ${rederFrameComment(0)}
+        ${ await rederFrameComment(0)}
         
         <div class="listComment py-2 border-t border-t-gray-400 mt-5">
           ${listComment}
@@ -155,20 +156,28 @@ $(document).on("click", ".danh-gia", function () {
   }
 });
 
-$(document).on("click", ".rederFrameComment", function () {
+$(document).on("click", ".rederFrameComment", async function () {
   var id = $(this).attr("data");
-  var html = rederFrameComment(id);
+  var html = await rederFrameComment(id);
   $(".frameComment").html("");
   $(this).parent().next().html(html);
 });
 
-function rederFrameComment(id) {
+async function rederFrameComment(id) {
+  var idUser = sessionStorage.getItem("idUserLogin");
+  var name ='';var phone= "";var email = ''; var hidden = '';
+  console.log(name);
+  if(idUser){
+    var user = await getUserByID(idUser)
+    var {name,phone,email} = user
+    hidden = 'hidden'
+  }
   var html = `<div class="py-4">
                   <textarea class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-gray-200 px-3 py-2.5 " placeholder="Mời bạn bình luận hoặc đặt câu hỏi.."></textarea>
                   <div class=" grid grid-cols-2 py-2 gap-4">
-                    <input type="text" name="name" class=" w-full border border-gray-200 py-2.5 rounded-[7px] px-3" placeholder="Họ và tên">
-                    <input type="text" name="phone" class=" w-full border border-gray-200 py-2.5 rounded-[7px] px-3"  placeholder="Số điện thoại">
-                    <input type="text" name="email" class=" w-full border border-gray-200 py-2.5 rounded-[7px] px-3" placeholder="Email">
+                    <input type="text" name="name" class="${hidden} w-full border border-gray-200 py-2.5 rounded-[7px] px-3" placeholder="Họ và tên" value="${name}">
+                    <input type="text" name="phone" class="${hidden}  w-full border border-gray-200 py-2.5 rounded-[7px] px-3"  placeholder="Số điện thoại" value="${phone}">
+                    <input type="text" name="email" class=${hidden} " w-full border border-gray-200 py-2.5 rounded-[7px] px-3" placeholder="Email" value="${email}">
                     <button idComment="${id}" class="create-comment font-bold text-lg text-white bg-blue-500 hover:bg-blue-600 rounded-[7px]">Gửi</button>
                   </div>
                 </div>`;

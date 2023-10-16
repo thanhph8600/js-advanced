@@ -44,7 +44,6 @@ $(document).on('click','.getOrderByEmail',async function(){
     }else{
         $('.list-order').addClass('bg-white  bg-opacity-90').removeClass('p-20')
         var table =await getTable(listOrders)
-        console.log(table);
         $('.list-order').html(table)
     }
     

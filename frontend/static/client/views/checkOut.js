@@ -8,20 +8,22 @@ import { createOrder_detail } from "../../admin/data/orderDetail.js";
 import { router } from "../index.js";
 import errPage from "../components/errPage.js";
 import $ from "jquery";
-import { getCoutCart } from "./home.js";
 import Validator from "../../admin/data/validate.js";
+import { getUserByID } from "../../admin/data/user.js";
 export default class extends AbstractView {
   constructor(params) {
     super(params);
     this.setTitle("Viewing Check out");
   }
-
   async getHtml() {
+
     var htmlCart = rederListCart()
     if(!htmlCart){
         return errPage()
     }
+    renderValueUser()
     var total = sumTotal()
+
     return `
     <!-- Component Start -->
     <div class="container px-5 pt-5 pb-10 mx-auto lg:w-4/5">
@@ -142,6 +144,17 @@ export default class extends AbstractView {
   }
 }
 
+async function renderValueUser(){
+    var idUser = sessionStorage.getItem("idUserLogin");
+    if(idUser){   
+        var user = await getUserByID(idUser);
+        $('input[name="customer_name"]').val(user.name)
+        $('input[name="customer_email"]').val(user.email)
+        $('input[name="customer_phone"]').val(user.phone)
+    }
+}
+
+
 async function callAPIAddress(){
     var citis = await getCity()
     rederAddress(citis,'city')
@@ -241,7 +254,7 @@ $(document).on('click','.pay-now',async function(){
     if(Validator.valName(name) && Validator.valEmail(email) && Validator.valPhone(phone)
     && Validator.valSelect(city) && Validator.valSelect(district) 
 && Validator.valSelect(ward) && Validator.valNull(address)){
-        address = `${address.val()} , ${ward}, ${district} , ${city}`
+        address = `${address.val()} , ${ward.val()}, ${district.val()} , ${city.val()}`
         let date =  getDateNow();
         date= formatDate(date)
         var dataOrder = {
@@ -264,9 +277,8 @@ $(document).on('click','.pay-now',async function(){
             createOrder_detail(dataOrder_detail)
         }
         await deleteLocal()
-        getCoutCart()
+        $('.countCart').html('0')
         history.pushState(null, null, '/thanks');
         router();
     }
-    
 })

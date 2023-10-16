@@ -3,19 +3,15 @@ export default function aside() {
         <aside class="left-sidebar">
         <div>
           <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="/index.html" class="text-nowrap logo-img"  data-link>
-              <img src="/static/assets/images/logos/dark-logo.svg" width="180" alt="" />
+            <a href="/index.html" class="text-nowrap logo-img pt-2 items-center"  data-link>
+              <img src="https://gaubongonline.vn/wp-content/uploads/2022/04/GBO_Original-120x80-1.png" width="120" alt="" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
               <i class="ti ti-x fs-8"></i>
             </div>
           </div>
-          <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <nav class="sidebar-nav scroll-sidebar py-3" data-simplebar="">
             <ul id="sidebarnav">
-              <li class="nav-small-cap">
-                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                <span class="hide-menu">Home</span>
-              </li>
               <li class="sidebar-item">
                 <a class="sidebar-link" href="/" aria-expanded="false" data-link>
                   <span>

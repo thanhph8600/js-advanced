@@ -138,7 +138,6 @@ $(document).on("click", ".increase", async function () {
 
 $(document).on("change", ".valueInput", async function () {
   var id = $(this).attr("data");
-  console.log(id);
   var value = $(this).val();
   if (value > 0 && value < 10) {
     value

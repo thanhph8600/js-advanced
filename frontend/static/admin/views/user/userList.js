@@ -1,5 +1,5 @@
 import AbstractView from "../AbstractView.js";
-import { getUser, deleteUser } from "../../data/user.js";
+import { getUser,updateUser} from "../../data/user.js";
 import $ from "jquery";
 
 export default class extends AbstractView {
@@ -47,20 +47,44 @@ function listUser(users){
 
 function itemUser(item){
     var {id,name,email,phone,thumb} = item
-    return `<tr class="idUser${id} align-center">
-                <td class="align-middle text-center" style="width:120px;height:120px" scope="row">
-                    <img  class="img-fluid rounded-5" src="/static/upload/${thumb}" alt="">
+    var ban = ``
+    var btn_ban = `
+            <button type="button" idUser="${id}" class="banUser btn btn-danger">
+                <i class="fa fa-ban" aria-hidden="true"></i> Ban 
+            </button>`
+    if(item.ban){
+        ban="cursor: no-drop; background:#F0F0F4;border:red 1px solid"
+        btn_ban = `
+            <button type="button" idUser="${id}" class="unBanUser btn btn-warning">
+                <i class="fa fa-unlock-alt" aria-hidden="true"></i> Un ban
+            </button>`
+    }
+    return `<tr class="idUser${id} align-center" style="${ban}">
+                <td class="align-middle text-center" style="width:120px;max-height:120px; overflow: hidden;" scope="row">
+                    <img  class=" rounded-5" style="width:100%;max-height:120px"  src="/static/upload/${thumb}" alt="">
                 </td>
                 <td class="align-middle text-center">${name}</td>
                 <td class="align-middle text-center">${email}</td>
                 <td class="align-middle text-center">${phone}</td>
-                <td class="align-middle text-center"><a href="user/${id}" data-link type="button" class="edit btn btn-success">Edit</a></td>
-                <td class="align-middle text-center"><button type="button" idUser="${id}" class="delete btn btn-danger">Delete</button></td>
+                <td class="align-middle text-center"><a href="user/${id}" data-link type="button" class="edit btn btn-success"><i class="fa fa-wrench" aria-hidden="true"></i> Edit</a></td>
+                <td class="align-middle text-center">
+                    ${btn_ban}
+                </td>
             </tr>`
 }
 
-$(document).on('click','.delete', function(){
+$(document).on('click','.banUser',async function(){
     let id = $(this).attr('idUser')
-    $(`.idUser${id}`).remove()
-    deleteUser(id)
+    $(`.idUser${id}`).attr('style','cursor: no-drop; background:#F0F0F4;border:red 1px solid')
+    $(this).removeClass('banUser btn btn-danger').addClass('unBanUser btn btn-warning')
+    $(this).html('<i class="fa fa-unlock-alt" aria-hidden="true"></i> Un ban')
+    await updateUser(id,{ban:'bi ban'})
+})
+
+$(document).on('click','.unBanUser',async function(){
+    let id = $(this).attr('idUser')
+    $(this).removeClass('unBanUser btn btn-warning').addClass('banUser btn btn-danger')
+    $(`.idUser${id}`).attr('style','')
+    $(this).html('<i class="fa fa-ban" aria-hidden="true"></i> Ban ')
+    await updateUser(id,{ban:''})
 })

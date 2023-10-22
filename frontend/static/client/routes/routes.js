@@ -7,6 +7,7 @@ import thanks from "../views/thanks.js";
 import checkOrder from "../views/checkOrder.js";
 import checkOrderDetail from "../views/checkOrderDetail.js";
 import login from "../views/login.js";
+import signUp from "../views/signUp.js";
 import detailUser from "../views/detailUser.js";
 const routes = [
     { path: "/", view: home },
@@ -20,6 +21,7 @@ const routes = [
     { path: "/check-order", view: checkOrder },
     { path: "/check-order/:id", view: checkOrderDetail },
     { path: "/login", view: login },
+    { path: "/sign-up", view: signUp },
     { path: "/detail-user", view: detailUser },
 ];
 

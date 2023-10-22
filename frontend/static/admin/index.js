@@ -1,4 +1,5 @@
 import frame from "./components/frame.js";
+import { getUserByID } from "./data/user.js";
 import routes from "./routes/routes.js";
 
 
@@ -35,6 +36,12 @@ const navigateTo = url => {
 };
 
 export const router = async () => {
+    
+    var idUser = getCookie("idUserLogin");
+    var user = await getUserByID(idUser)
+    if(user.role != 0){
+        window.location="http://localhost:4040/";
+    }
 
     // Test each route for potential match
     const potentialMatches = routes.map(route => {
@@ -53,9 +60,24 @@ export const router = async () => {
         };
     }
 
-    const view = new match.route.view(getParams(match));
+    var view = new match.route.view(getParams(match));
 
     document.querySelector("#main").innerHTML = await view.getHtml();
 };
 
-
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+  

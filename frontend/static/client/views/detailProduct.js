@@ -9,10 +9,12 @@ import {
   getComments,
   createComment,
   getCommentByID,
+  deleteComment,
 } from "../../admin/data/comment.js";
 import Validator from "../../admin/data/validate.js";
 import $ from "jquery";
 import { getUserByID } from "../../admin/data/user.js";
+import { setLocalstorage } from "../components/localstorage.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -166,12 +168,12 @@ $(document).on("click", ".rederFrameComment", async function () {
 async function rederFrameComment(id) {
   var idUser = sessionStorage.getItem("idUserLogin");
   var name ='';var phone= "";var email = ''; var hidden = '';
-  console.log(name);
   if(idUser){
     var user = await getUserByID(idUser)
     var {name,phone,email} = user
     hidden = 'hidden'
   }
+
   var html = `<div class="py-4">
                   <textarea class="peer h-full min-h-[100px] w-full resize-none rounded-[7px] border border-gray-200 px-3 py-2.5 " placeholder="Mời bạn bình luận hoặc đặt câu hỏi.."></textarea>
                   <div class=" grid grid-cols-2 py-2 gap-4">
@@ -210,6 +212,11 @@ async function rederFirstComment(id) {
   }
 
 function rederItemComment(item, classEle = "") {
+  var emailUser = sessionStorage.getItem('emailMess')
+  var deleteComment = ``
+  if(emailUser == item.email){
+    deleteComment = `<button data="${item.id}" product_id="${item.product_id}" class="deleteComment text-xs">|&#160;&#160; Xóa <button>`
+  }
   var html = `
     <div class="comment-${item.id} py-2">
       <div class="${classEle}">
@@ -217,16 +224,25 @@ function rederItemComment(item, classEle = "") {
           ${renderStarComment(item.star)}
         </h4>
         <p class=" py-2">${item.comment}</p>
-        <span class="text-xs">${item.created_date}  |  </span>
-        <button data="${
-          item.id
-        }" class="rederFrameComment text-xs">Trả lời<button>
+          <span class="text-xs">${item.created_date}</span>
+          <span>&#160;&#160;|&#160;&#160;</span>
+          <button data="${item.id}" class="rederFrameComment text-xs">Trả lời<button>
+          <span>&#160;&#160;</span>
+          ${deleteComment}
       </div>
       <div class="frameComment"></div>
     </div>
   `;
   return html;
 }
+
+$(document).on('click','.deleteComment',async function(){
+  var idComment = $(this).attr('data')
+  var idProduct =  $(this).attr('product_id')
+  $(`.comment-${idComment}`).remove()
+  await deleteComment(idComment)
+  await rederStar(idProduct)
+})
 
 function checkStar(index) {
   var text = "";

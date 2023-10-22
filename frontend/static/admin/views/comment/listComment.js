@@ -97,7 +97,6 @@ async function itemComment(item) {
 
 export function renderStarComment(star) {
     star = Math.round(star)
-    console.log(star);
     var html = ``;
     for (let i = 0; i < Number(star); i++) {
       html += `<span><i class="fa fa-star pl-1 text-warning text-xs" aria-hidden="true"></i></span>`;

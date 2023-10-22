@@ -23,6 +23,7 @@ export default class extends AbstractView {
     }
     renderValueUser()
     var total = sumTotal()
+    callAPIAddress()
 
     return `
     <!-- Component Start -->
@@ -159,7 +160,6 @@ async function callAPIAddress(){
     var citis = await getCity()
     rederAddress(citis,'city')
 }
-callAPIAddress()
 
 function rederAddress(items, select){
     var row =' <option disable value="">Chọn</option>';

@@ -55,7 +55,6 @@ export const router = async () => {
 
     const view = new match.route.view(getParams(match));
 
-
     document.querySelector("#main").innerHTML = await view.getHtml();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 

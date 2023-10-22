@@ -69,7 +69,7 @@ function renderFormChatAdmin() {
   var html = `
           <div class="py-2 px-4 border-b flex justify-between items-center">
               <div class="flex gap-2 items-center">
-                  <img class=" w-7 h-7 rounded-full" src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/283302657_1459052971180634_6189845710225168496_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=V-YiRFMr-k0AX85edC2&_nc_ht=scontent.fdad2-1.fna&oh=00_AfDHwKMI9A6TNaPFOZaG3CYbI6Kw2LrHLEnjYWbzWiXIMQ&oe=65266EB1">
+                  <img class=" w-7 h-7 rounded-full" src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/283302657_1459052971180634_6189845710225168496_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=2bWBHK5M4NEAX_pHV93&_nc_ht=scontent.fdad2-1.fna&oh=00_AfBCLNmgYpf3N6luQgJBnIj_oHMa67s8SAaBLiTaj44_dQ&oe=653A3531">
                   <span class=" text-base font-bold">Admin</span>
               </div>
               <div class=" relative">
@@ -184,8 +184,10 @@ async function renderMessUser() {
       message: mess,
       created_time: getTimeNow(),
     };
-    updateMessenger(idMess, data);
+    sendMessSocket(idMess,data)
 
+    updateMessenger(idMess, data);
+    
     var listMess = await getMessengers();
     var messUser = listMess.find((item) => {
       return item.id == idMess;
@@ -258,6 +260,7 @@ async function getMessUser(email, name) {
 }
 
 function renderMessUserAndAdmin(messUser) {
+  
   var mess = messUser.mess;
   for (const key in mess) {
     if (Object.hasOwnProperty.call(mess, key)) {
@@ -284,3 +287,22 @@ function formDataCreateMessUser(name, email) {
   };
   return data;
 }
+
+const socket = io('http://localhost:3200/');
+
+function sendMessSocket(idMess,data){
+  var name= sessionStorage.getItem("nameMess");
+  var see = `<i class="fa fa-question-circle" aria-hidden="true"></i>`
+  socket.emit('chat message', {name,idMess,see,...data});
+}
+
+socket.on('chat message', (data) => {
+  if(data.role == "admin"){
+    var idMess = $(".idMessUser").val();
+    if(data.idMess == idMess){
+      var getMess =  getItemMess(data.message,data.role)
+      $(".detail-chat-box").append(getMess);
+      $(".detail-chat-box").scrollTop($(".detail-chat-box")[0].scrollHeight);
+    }
+  }
+});

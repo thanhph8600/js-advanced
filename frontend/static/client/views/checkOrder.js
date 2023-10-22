@@ -3,6 +3,7 @@ import { getOrder, checkStatus  } from "../../admin/data/order.js";
 import { getOrderDetail  } from "../../admin/data/orderDetail.js";
 import { convertToVND } from "../../admin/data/connectData.js";
 import $ from "jquery";
+import { getUserByID } from "../../admin/data/user.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -11,13 +12,22 @@ export default class extends AbstractView {
   }
 
   async getHtml() {
+    var idUser = sessionStorage.getItem("idUserLogin");
+    var email ="";
+    var phone ="";
+    if(idUser){
+        var user =await getUserByID(idUser)
+        email = user.email;
+        phone = user.phone
+        renderOrderByUser(email,phone)  
+    }
     return `
     <div class="container px-5 pt-5 pb-10 mx-auto lg:w-4/5">
     <h2 class="pb-5 uppercase text-sm">Trang chủ  > Tra cứu đơn hàng</h2>
         <div class="bg-repeat-x bg-contain bg-bottom text-center p-10 rounded shadow-lg bg-[url('https://thuthuatnhanh.com/wp-content/uploads/2022/02/Anh-nen-We-Bare-Bear-xanh-ombre.jpg')]">
             <h1 class="mb-6 text-3xl font-bold text-gray-700">Tra cứu đơn hàng</h1>
-            <input type="text" name="email" placeholder="Nhập email của bạn..." class="mb-4 w-full px-3 py-2 border border-gray-300 rounded">
-            <input type="text" name="phone" placeholder="Nhập số điện thoại của bạn..." class="mb-4 w-full px-3 py-2 border border-gray-300 rounded">
+            <input type="text" name="email" placeholder="Nhập email của bạn..." class="mb-4 w-full px-3 py-2 border border-gray-300 rounded" value="${email}">
+            <input type="text" name="phone" placeholder="Nhập số điện thoại của bạn..." class="mb-4 w-full px-3 py-2 border border-gray-300 rounded" value="${phone}">
             <button class="getOrderByEmail w-full px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Tra cứu</button>
             <div class="mt-6 border p-20 border-gray-300 rounded list-order">
                 <div class=" flex flex-col  bg-white">
@@ -30,10 +40,9 @@ export default class extends AbstractView {
   }
 }
 
-$(document).on('click','.getOrderByEmail',async function(){
+
+async function renderOrderByUser(email,phone){
     var orders =await getOrder()
-    var email = $('input[name=email]').val();
-    var phone = $('input[name=phone]').val();
     var listOrders = orders.filter(item=>{
         return (item.customer_email.trim() == email.trim() 
         && item.customer_phone.trim() == phone.trim() )
@@ -43,10 +52,14 @@ $(document).on('click','.getOrderByEmail',async function(){
         $('.list-order').html('<h2 class="mb-4 text-2xl font-bold text-black">Không tìm thấy đơn hàng nào</h2>')
     }else{
         $('.list-order').addClass('bg-white  bg-opacity-90').removeClass('p-20')
-        var table =await getTable(listOrders)
+        var table = await getTable(listOrders)
         $('.list-order').html(table)
     }
-    
+}
+$(document).on('click','.getOrderByEmail',async function(){
+    var email = $('input[name=email]').val();
+    var phone = $('input[name=phone]').val();
+    renderOrderByUser(email,phone)    
 })
 
 async function getTable(listOrders){

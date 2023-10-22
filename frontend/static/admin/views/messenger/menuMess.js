@@ -6,7 +6,8 @@ import {
   updateMessenger,
   updateSeeMess,
   getMessengerDetailByID,
-  deleteMessengerItem
+  deleteMessengerItem,
+  deleteMessenger
 } from "../../data/messenger";
 import Validator from "../../data/validate.js";
 
@@ -23,9 +24,11 @@ export default class extends AbstractView {
   $('.loadAdmin').css('display','block')
 
     var listMess = await renderListMess();
+    
     if (!this.id) {
       this.id = 0;
     } else {
+      await updateSeeMess(this.id, { see: 0 });
       var mess = await getMessengerByID(this.id);
       if (!mess.email) {
         this.id = 0;
@@ -45,7 +48,7 @@ export default class extends AbstractView {
           <div class="card" style="height:80vh">
             <div class="card-body p-3">
               <div class=" d-flex justify-content-between align-items-center  pb-2">
-                <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/283302657_1459052971180634_6189845710225168496_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=yhJqDpkVpHgAX8Hgb8g&_nc_ht=scontent.fdad2-1.fna&oh=00_AfBovA01csLzFoiH-w6UXHjZ7Jnf1k2qosJ95k-ygp8epQ&oe=65266EB1" alt="avatar"
+                <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/283302657_1459052971180634_6189845710225168496_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=2bWBHK5M4NEAX_pHV93&_nc_ht=scontent.fdad2-1.fna&oh=00_AfBCLNmgYpf3N6luQgJBnIj_oHMa67s8SAaBLiTaj44_dQ&oe=653A3531" alt="avatar"
                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="40">
                 <div class=" ml-full">
                   <i class=" fs-5 fa fa-ellipsis-h" aria-hidden="true"></i>
@@ -72,7 +75,7 @@ export default class extends AbstractView {
             <div class="card-body p-0 d-flex flex-column">
               ${detailMess}
                 <div  id="chat2" class="card-footer text-muted d-flex justify-content-start align-items-center p-3 gap-3 pe-4 ">
-                  <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/283302657_1459052971180634_6189845710225168496_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=a2f6c7&_nc_ohc=yhJqDpkVpHgAX8Hgb8g&_nc_ht=scontent.fdad2-1.fna&oh=00_AfBovA01csLzFoiH-w6UXHjZ7Jnf1k2qosJ95k-ygp8epQ&oe=65266EB1"
+                  <img src="https://scontent.fdad2-1.fna.fbcdn.net/v/t39.30808-6/283302657_1459052971180634_6189845710225168496_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=2bWBHK5M4NEAX_pHV93&_nc_ht=scontent.fdad2-1.fna&oh=00_AfBCLNmgYpf3N6luQgJBnIj_oHMa67s8SAaBLiTaj44_dQ&oe=653A3531"
                     alt="avatar 3" style="width: 40px; height: 100%; border-radius:100%">
                   <input type="text" name="input-mess-admin" class="form-control " 
                     placeholder="Type message">
@@ -105,46 +108,51 @@ async function renderListMess() {
       new Date(b.recent_change).getTime() - new Date(a.recent_change).getTime()
     );
   });
+
+  await updateSeeMess(listMess[0].id, { see: 0 });
   var html = listMess.map((item) => {
     if (item.see == 0) {
       item.see = "";
     }
 
-    var keys = Object.keys(item.mess);
-    var lastKey = keys[keys.length - 1];
-    var lastValue = item.mess[lastKey];
-
-    return `<li class="idMess-${item.id} p-2 border-bottom my-1" style="${
-      item.see > 0 ? "background:#F0F0F4" : ""
-    }">
-              <a href="/message/${
-                item.id
-              }" data-link class="d-flex justify-content-between">
-                <div class="d-flex flex-row">
-                  <img src="https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg" alt="avatar"
-                    class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="40">
-                  <div class="pt-1">
-                    <p class="fw-bold mb-0 ">${item.name}</p>
-                    <p class="small text-muted m-0">${lastValue.message.slice(
-                      0,
-                      20
-                    )} ...</p>
-                  </div>
-                </div>
-                <div class="pt-1">
-                  <p class="small text-muted mb-1">${lastValue.created_time}</p>
-                  <span class=" float-end">${item.see}</span>
-                </div>
-              </a>
-            </li>`;
+    if(item.id!='undefined'){
+      var keys = Object.keys(item.mess);
+      var lastKey = keys[keys.length - 1];
+      var lastValue = item.mess[lastKey];
+      var element = itemListMessUser(item.id, item.see, item.name,lastValue.message,lastValue.created_time)
+      return element
+    }
+    deleteMessenger('undefined')
+    return ``
   });
   return html.join("");
 }
 
-setInterval(async function () {
-  var newList = await renderListMess();
-  $(".listMessenger").html(newList);
-}, 1000);
+function itemListMessUser(idMess, see, name,message,time){
+  return `<li class="idMess-${idMess} p-2 border-bottom my-1" style="${
+    see != 0 ? "background:#F0F0F4" : ""
+  }">
+            <a href="/message/${
+              idMess
+            }" data-link class="d-flex justify-content-between">
+              <div class="d-flex flex-row">
+                <img src="https://bloganchoi.com/wp-content/uploads/2022/02/avatar-trang-y-nghia.jpeg" alt="avatar"
+                  class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="40">
+                <div class="pt-1">
+                  <p class="fw-bold mb-0 ">${name}</p>
+                  <p class="small text-muted m-0">${message.slice(
+                    0,
+                    20
+                  )} ...</p>
+                </div>
+              </div>
+              <div class="pt-1">
+                <p class="small text-muted mb-1">${time}</p>
+                <span class=" float-end">${see}</span>
+              </div>
+            </a>
+          </li>`
+}
 
 async function renderDetailMESS(IDMess = 0) {
 
@@ -268,7 +276,7 @@ async function addMessAdmin() {
       message: message.val(),
       created_time: getTimeNow(),
     };
-
+    sendMessSocket(idMess,data)
     $('input[name="input-mess-admin"]').val("");
     var id = await updateMessenger(idMess, data);
     var newMess = await getMessengerDetailByID(idMess,id.id)
@@ -289,3 +297,24 @@ $(document).on("click", ".delete-item-mess",async function () {
     $('.loadAdmin').css('display','none')
   }
 });
+
+const socket = io('http://localhost:3200/');
+
+function sendMessSocket(idMess,data){
+  socket.emit('chat message', {idMess,...data});
+}
+
+socket.on('chat message', (data) => {
+  if(data.role == "user"){
+    var idMess = $('input[name="idMess"]').val()
+    if(data.idMess == idMess){
+      var itemMess = renderItemMess(data,data.idMess)
+      $(".detail-chat-box ").append(itemMess);
+    }else{
+      $(`.idMess-${data.idMess}`).remove()
+      $('.listMessenger').prepend(itemListMessUser(data.idMess,data.see,data.name,data.message,data.created_time))
+    }
+  }
+});
+
+

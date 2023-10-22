@@ -6,6 +6,7 @@ import Validator from "../../admin/data/validate.js";
 import { router } from "../index.js";
 
 import $ from "jquery";
+import { setCookie } from "./login.js";
 export default class extends AbstractView {
   constructor(params) {
     super(params);
@@ -18,6 +19,10 @@ export default class extends AbstractView {
         return errPage()
     }
     var user = await getUserByID(idUser)
+    var dashbord = ``
+    if(user.role == 0){
+      dashbord = `<a href="http://localhost:3200/" target="_blank" class="btn-change-pass cursor-pointer hover:text-[--rose-2]">Truy cập dashboard</a>`
+    }
     return `
           <div class="container lg:w-4/5 m-auto py-8">
             <div class="flex gap-2">
@@ -29,6 +34,7 @@ export default class extends AbstractView {
                 <div class="px-8 flex flex-col gap-3 pt-4 ">
                   <p class="btn-info-user cursor-pointer hover:text-[--rose-2]">Cập nhật tài khoản</p>
                   <p class="btn-change-pass cursor-pointer hover:text-[--rose-2]">Đổi mật khẩu</p>
+                  ${dashbord}
                   <p class="btn-logn-out cursor-pointer hover:text-[--rose-2]">Đăng xuất</p>
                 </div>
               </div>
@@ -59,6 +65,8 @@ $(document).on('click','.btn-forgot-pass',function(){
 $(document).on('click','.btn-logn-out',function(){
   sessionStorage.removeItem('idUserLogin')
   sessionStorage.removeItem('emailMess')
+  sessionStorage.removeItem('nameMess')
+  setCookie('idUserLogin','',0)
   $('.itemLogin').html('<i class="pr-1 fa fa-user-circle-o" aria-hidden="true"></i> Đăng nhập')
   $('.itemLogin').attr('href','/login')
   history.pushState(null, null, '/home');

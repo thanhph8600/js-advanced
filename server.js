@@ -7,6 +7,7 @@ var fs = require('fs');
 
 const app = express();
 
+
 app.use(
   "/static",
   express.static(path.resolve(__dirname, "frontend", "static"))
@@ -29,8 +30,6 @@ var storage = multer.diskStorage({
     cb(null, path.join(__dirname,'/frontend/static/upload'));
   },
   filename: function (req, file, cb) {
-    console.log(1);
-    // console.log(file.fieldname);
     let namefile =  Date.now()  + "-" +  file.originalname
     cb(null, namefile);
     req.nameFile = namefile
@@ -52,7 +51,6 @@ app.post('/delete_file', function(req, res){
   console.log(filePath);
   fs.unlink(filePath, function(err){
       if(err){
-          console.log(err);
           return res.status(500).send('An error occurred while deleting the file.');
       }
       res.send('File deleted successfully.');
@@ -60,8 +58,30 @@ app.post('/delete_file', function(req, res){
 });
 
 
+const cors = require("cors")
+app.use(cors({
+  origin : "*",
+
+}))
+const http = require("http").createServer(app);
+
+const  io  = require("socket.io")(http,{
+  cors: {
+    origin : "*",
+  }
+})
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('chat message', (data) => {
+    io.emit('chat message', data);
+  });
+});
+
+
+
 app.get("/*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "frontend", "admin.html"));
 });
 
-app.listen(process.env.PORT || 3200, () => console.log("Server running..."));
+http.listen(process.env.PORT || 3200, () => console.log("Server running..."));

@@ -17,11 +17,12 @@ export default class extends AbstractView {
         <table class="table">
             <thead  class=" align-center">
                 <tr>
-                    <th class="align-middle text-center" scope="col">Commentator</th>
+                    <th class="align-middle" scope="col">Name</th>
                     <th class="align-middle text-center" scope="col">Comment</th>
                     <th class="align-middle text-center" scope="col">Star</th>
                     <th class="align-middle text-center" scope="col">Date created</th>
-                    <th class="align-middle text-center" scope="col"></th>
+                    <th class="align-middle text-right" scope="col"></th>
+                    <th class="align-middle text-left" scope="col"></th>
                 </tr>
             </thead>
             <tbody id="listComment">
@@ -50,15 +51,18 @@ async function renderComment(id){
 function rederItemComment(item){
     return `
     <tr class="idComment-${item.id} align-center"> 
-        <td class="align-middle text-center">${item.name}</td>
+        <td class="align-middle ">${item.name}</td>
         <td class="align-middle text-center">${item.comment}</td>
         <td class="align-middle text-center">${renderStarComment(item.star)}</td>
         <td class="align-middle text-center">${item.created_date}</td>
-        <td class="align-middle text-center">
+        <td class="align-middle text-right">
             <button data="${item.id}" type="button" class="deleteComment btn btn-danger">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
-                Delete
             </button>
+        </td>
+        <td class="align-middle text-left">
+            <a href="http://localhost:4040/detail-product/${item.product_id}" target="_blank"
+             class="deleteComment btn btn-info"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
         </td>
     </tr>
     `

@@ -5,15 +5,17 @@ import { router } from "../index.js";
 import $ from "jquery";
 
 export default function header() {
-        var userLogin = sessionStorage.getItem('idUserLogin')
-        if(userLogin){
-          let user = getUserByID(userLogin)
-          user.then(x=>{
-            $('.itemLogin').html('<i class="pr-1 fa fa-user-circle-o" aria-hidden="true"></i>'+x.name)
-            $('.itemLogin').attr('href','/detail-user')
-          })
-        }
-        return `
+  var userLogin = sessionStorage.getItem("idUserLogin");
+  if (userLogin) {
+    let user = getUserByID(userLogin);
+    user.then((x) => {
+      $(".itemLogin").html(
+        '<i class="pr-1 fa fa-user-circle-o" aria-hidden="true"></i>' + x.name
+      );
+      $(".itemLogin").attr("href", "/detail-user");
+    });
+  }
+  return `
         <header>
           <div class="bg-white py-4">
             <div class="container lg:w-4/5 m-auto">
@@ -63,46 +65,53 @@ export default function header() {
         `;
 }
 
-$(document).on('keyup keyon','input[name=search]', async function(){
-  var value = $(this).val()
-  if(value){
-    var products = await getProduct()
-    products = products.filter(item=>{
-      return removeVietnameseTones(item.name).includes(removeVietnameseTones(value))
-    })
-    if(products.length == 0){
-      $('.search').html('')
-      return
-    }
-
-    var itemProducts = '' 
-    for (let i = 0; i < products.length; i++) {
-      itemProducts = itemProducts + `<a href="/detail-product/${products[i].id}" data-link class=" items-center py-2 px-4 border-y flex gap-4">
+let timeOut = null;
+$(document).on("keyup keyon", "input[name=search]", async function () {
+  clearTimeout(timeOut);
+  timeOut = setTimeout(async () => {
+    var value = $(this).val();
+    if (value) {
+      var products = await getProduct();
+      products = products.filter((item) => {
+        return removeVietnameseTones(item.name).includes(
+          removeVietnameseTones(value)
+        );
+      });
+      if (products.length == 0) {
+        $(".search").html("");
+        return;
+      }
+      var itemProducts = "";
+      for (let i = 0; i < products.length; i++) {
+        itemProducts =
+          itemProducts +
+          `<a href="/detail-product/${products[i].id}" data-link class=" items-center py-2 px-4 border-y flex gap-4">
       <img class=" w-[40px]" src="/static/upload/${products[i].thumb}">
       <span class="truncate">${products[i].name}</span>
-    </a>`
-    if(i==3) break
-    }
-    var html = `
+    </a>`;
+        if (i == 3) break;
+      }
+      var html = `
           <div class=" bg-white border flex flex-col gap-1 p-2 w-full z-50">
           ${itemProducts}
         </div>
-  `
-    $('.search').html(html)
-  }else{
-    $('.search').html('')
-  }
-})
+  `;
+      $(".search").html(html);
+    } else {
+      $(".search").html("");
+    }
+  }, 1000);
+});
 
-$(document).on('click','.btn-search',function(){
-  var value = $('input[name=search]').val()
-  value = removeVietnameseTones(value)
-  $('.search').html('')
-  $('input[name=search]').val('')
-  history.pushState(null, null, '/list-products/search='+value);
+$(document).on("click", ".btn-search", function () {
+  var value = $("input[name=search]").val();
+  value = removeVietnameseTones(value);
+  $(".search").html("");
+  $("input[name=search]").val("");
+  history.pushState(null, null, "/list-products/search=" + value);
   router();
-})
+});
 
-window.onscroll = function(){
-  $('.search').html('')
-}
+window.onscroll = function () {
+  $(".search").html("");
+};

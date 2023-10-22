@@ -58,9 +58,8 @@ export default class extends AbstractView {
                                         Sign in
                                     </button>
                                 </div>
-    
-    
-                            <p class="mt-6 text-sm text-center text-gray-400">Bạn có thể nhắn tin cho admin để tạo tài khoản hoặc lấy lại mật khẩu</p>
+                            
+                            <p class="mt-6 text-sm text-center text-gray-400">Tạo tài khoản <a href="/sign-up" data-link class="text-blue-400">đăng ký</a></p>
                         </div>
                     </div>
                 </div>
@@ -80,14 +79,27 @@ $(document).on('click','.btn-signIn',async function(){
             return (item.email == email.val() && item.password == pass.val() )
         })
         if(itemUser){
-            sessionStorage.setItem("idUserLogin", itemUser.id);
-            sessionStorage.setItem("emailMess", itemUser.email);
-            $('.itemLogin').html('<i class="pr-1 fa fa-user-circle-o" aria-hidden="true"></i>'+itemUser.name)
-            $('.itemLogin').attr('href','/detail-user')
-            history.pushState(null, null, '/detail-user');
-            router();
+            if(itemUser.ban){
+                $('.checkLogin').html('Tài khoản của bạn đã bị vô hiệu hóa')
+            }else{
+                sessionStorage.setItem("idUserLogin", itemUser.id);
+                sessionStorage.setItem("emailMess", itemUser.email);
+                sessionStorage.setItem("nameMess", itemUser.name);
+                setCookie("idUserLogin", itemUser.id, 1);
+                $('.itemLogin').html('<i class="pr-1 fa fa-user-circle-o" aria-hidden="true"></i>'+itemUser.name)
+                $('.itemLogin').attr('href','/detail-user')
+                history.pushState(null, null, '/detail-user');
+                router();
+            }
         }else{
             $('.checkLogin').html('Email hoặc mật khẩu không chính sát')
         }
     }
 })
+
+export function setCookie(cname,cvalue,exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }

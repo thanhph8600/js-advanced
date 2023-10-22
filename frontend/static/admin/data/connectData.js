@@ -2,43 +2,103 @@ import axios from 'axios';
 import $ from "jquery";
 
 //GET JSON Sever
-var url = "http://localhost:3000/";
+// var url = "http://localhost:3000/";
+// export async function getData(table) {
+//   onLoad()
+//   let response = await axios.get(url + table);
+//   offLoad()
+//   return response.data;
+// }
+
+// export async function getDataByID(table, id) {
+//   onLoad()
+//   let response = await axios.get(url + table + "/" + id);
+//   offLoad()
+//   return response.data;
+// }
+
+// export async function createData(table, data) {
+//   onLoad()
+//   let response = await axios.post(url + table, data);
+//   offLoad()
+//   return response.data;
+// }
+
+// export async function updateData(table, data) {
+//   onLoad()
+//   let response = await axios.put(url + table, data);
+//   offLoad()
+//   return response.data;
+// }
+
+// export async function deleteData(table, data) {
+//   onLoad()
+//   let response = await axios.delete(url + table + "/" + data);
+//   offLoad()
+//   return response.data;
+// }
+
+
+//---------------------------------------------------//
+//GET FIREBASE
+var url = "https://popo-api-5-default-rtdb.firebaseio.com/";
+
 export async function getData(table) {
   onLoad()
-  let response = await axios.get(url + table);
-  console.log(response.data);
+  let response = await axios.get(url + table + '.json');
+  response = response.data
+  if(response){
+    response =  Object.entries(response).map(([key,value]) =>{
+      return {
+        id:key,
+        ...value
+      }
+    })
+    
+  }
+  
   offLoad()
-  return response.data;
+  return response;
+  
 }
 
 export async function getDataByID(table, id) {
   onLoad()
-  let response = await axios.get(url + table + "/" + id);
+  let response = await axios.get(url + table + "/" + id + '.json');
+  response = response.data
+  response = {
+    id: id,
+    ...response
+  }
   offLoad()
-  return response.data;
+  return response;
 }
 
 export async function createData(table, data) {
   onLoad()
-  let response = await axios.post(url + table, data);
+  let response = await axios.post(url + table + '.json', data);
+  response =  response.data
+  response = {
+    id: response.name
+  }
   offLoad()
-  return response.data;
+  return response;
 }
 
 export async function updateData(table, data) {
   onLoad()
-  let response = await axios.put(url + table, data);
+
+  let response = await axios.patch(url + table + '.json', data);
   offLoad()
   return response.data;
 }
 
 export async function deleteData(table, data) {
   onLoad()
-  let response = await axios.delete(url + table + "/" + data);
+  let response = await axios.delete(url + table + "/" + data + '.json');
   offLoad()
   return response.data;
 }
-
 
 
 //---------------------------------------------------//
@@ -90,12 +150,14 @@ export async function uploadFile(upload) {
 }
 
 export async function deleteFile(thumb) {
+  console.log(thumb);
+
   return new Promise((resolve) => {
   $.ajax({
     url: '/delete_file',
     type: 'POST',
     data: {
-        filePath:`/static/upload/${thumb}`
+        filePath:`./frontend/static/upload/${thumb}`
        },
     success: function() {
         console.log('Tệp đã được xóa thành công');
